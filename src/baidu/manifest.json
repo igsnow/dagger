@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "BaiduSeachString",
+  "version": "0.1.0",
+  "description": "问度娘",
+  "icons": {
+    "16": "sicon.png",
+    "48": "sicon.png",
+    "128": "sicon.png"
+  },
+  "background": {
+    "scripts": [
+      "BDSCHbackground.js"
+    ]
+  },
+  "permissions": [
+    "contextMenus"
+  ]
+}
