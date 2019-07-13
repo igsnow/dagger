@@ -44,30 +44,30 @@ const puppeteer = require('puppeteer');
     // console.log(response);
 
     // 页面自动滚动到底部，确保获取懒加载的信息
-    await page.evaluate(() => {
-        return new Promise((resolve, reject) => {
-            let totalHeight = 0
-            let distance = 600
-            let timer = setInterval(() => {
-                window.scrollBy(0, distance)
-                totalHeight += distance
-                if (totalHeight >= document.body.scrollHeight) {
-                    clearInterval(timer)
-                    resolve()
-                }
-            }, 200)
-        })
-    });
+    // await page.evaluate(() => {
+    //     return new Promise((resolve, reject) => {
+    //         let totalHeight = 0
+    //         let distance = 600
+    //         let timer = setInterval(() => {
+    //             window.scrollBy(0, distance)
+    //             totalHeight += distance
+    //             if (totalHeight >= document.body.scrollHeight) {
+    //                 clearInterval(timer)
+    //                 resolve()
+    //             }
+    //         }, 200)
+    //     })
+    // });
     // 获取页面所有的a链接
-    let res = await page.evaluate(() => {
-        return new Promise((resolve, reject) => {
-            let links = [...document.querySelectorAll('a')];
-            let arr = links.map(el => {
-                return {href: el.href.trim(), text: el.innerText}
-            });
-            resolve(arr)
-        })
-    });
+    // let res = await page.evaluate(() => {
+    //     return new Promise((resolve, reject) => {
+    //         let links = [...document.querySelectorAll('a')];
+    //         let arr = links.map(el => {
+    //             return {href: el.href.trim(), text: el.innerText}
+    //         });
+    //         resolve(arr)
+    //     })
+    // });
     // console.log(res);
 
     // 获取页面源代码信息
@@ -88,13 +88,18 @@ const puppeteer = require('puppeteer');
             })
             if (page.url() === homeUrl) {
                 console.log('登录成功了！')
-                page.goto(detailUrl, {
+                await page.goto(detailUrl, {
                     waitUntil: 'load'
                 });
                 break;
             }
         }
     }
+
+    // await page.waitForSelector('.offerdetail_ditto_purchasing')
+    // await page.waitForSelector('.do-cart')
+    console.log(11);
+    await page.tap('.do-cart')
 
 
 })();
