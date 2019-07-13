@@ -18,8 +18,9 @@ const puppeteer = require('puppeteer');
 
     // 先跳转到登录页
     let loginUrl = 'https://login.1688.com/member/signin.htm?spm=a260k.dacugeneral.2683862.3.6633436c8iuuzd&Done=https%3A%2F%2Fwww.1688.com%2F'
+    let homeUrl = 'https://www.1688.com/'
+    let detailUrl = 'https://detail.1688.com/offer/585943639773.html?spm=a261p.8650809.0.0.6e476328Bt7AQv&tracelog=cps&clickid=e4f7eaf54a50c5a293338d5f39f68907';
     // let u = 'https://baidu.com/'
-    let url = 'https://detail.1688.com/offer/585943639773.html?spm=a261p.8650809.0.0.6e476328Bt7AQv&tracelog=cps&clickid=e4f7eaf54a50c5a293338d5f39f68907';
     await page.goto(loginUrl, {
         waitUntil: 'load'
     });
@@ -69,7 +70,7 @@ const puppeteer = require('puppeteer');
     });
     // console.log(res);
 
-    // // 获取页面源代码信息
+    // 获取页面源代码信息
     // const bodyHandle = await page.$('body');
     // const html = await page.evaluate(body => body.innerHTML, bodyHandle);
     // await bodyHandle.dispose();
@@ -79,17 +80,21 @@ const puppeteer = require('puppeteer');
     // await page.screenshot({path: 'screenshot.png', fullPage: true});
     // await browser.close();
 
-    // 监听到导航栏url变化时，跳转到1688详情页
-    await page.on('framenavigated', frame => {
+    // 监听到导航栏url变化时，当登录成功时跳转到1688详情页
+    if (page.url() === loginUrl) {
+        while (true) {
+            await page.waitForNavigation({
+                waitUntil: 'load'
+            })
+            if (page.url() === homeUrl) {
+                console.log('登录成功了！')
+                page.goto(detailUrl, {
+                    waitUntil: 'load'
+                });
+                break;
+            }
+        }
+    }
 
-        // if (frame.parentFrame() === null) {
-        //     console.log(frame._url);
-        // } else {
-        //     console.log(frame._url);
-        // }
-    })
-    await page.goto(url, {
-        waitUntil: 'load'
-    });
 
 })();
