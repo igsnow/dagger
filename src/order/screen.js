@@ -7,23 +7,28 @@ const puppeteer = require('puppeteer');
     });
     const page = await browser.newPage();
     await page.evaluateOnNewDocument(() => {
-        window.navigator = {}
-    });
+        Object.defineProperty(navigator, 'webdriver', {
+            get: () => undefined,
+        });
+    })
     await page.setViewport({
         width: 1500,
         height: 900
     });
-    let u = 'https://baidu.com/'
-    // let url = 'https://detail.1688.com/offer/585943639773.html?spm=a261p.8650809.0.0.6e476328Bt7AQv&tracelog=cps&clickid=e4f7eaf54a50c5a293338d5f39f68907';
-    await page.goto(u, {
+
+    // 先跳转到登录页
+    let loginUrl = 'https://login.1688.com/member/signin.htm?spm=a260k.dacugeneral.2683862.3.6633436c8iuuzd&Done=https%3A%2F%2Fwww.1688.com%2F'
+    // let u = 'https://baidu.com/'
+    let url = 'https://detail.1688.com/offer/585943639773.html?spm=a261p.8650809.0.0.6e476328Bt7AQv&tracelog=cps&clickid=e4f7eaf54a50c5a293338d5f39f68907';
+    await page.goto(loginUrl, {
         waitUntil: 'load'
     });
 
-    await page.focus('#kw');
-    await page.type('#kw', '淘宝反爬', {
-        delay: 300,
-    });
-    await page.keyboard.press('Enter');
+    // await page.focus('#kw');
+    // await page.type('#kw', '淘宝反爬', {
+    //     delay: 300,
+    // });
+    // await page.keyboard.press('Enter');
 
 
     // const account = `zzy浪淘沙`;
@@ -36,11 +41,6 @@ const puppeteer = require('puppeteer');
     //     page.click('#J_SubmitStatic')
     // ]);
     // console.log(response);
-
-    // TODO 业务逻辑
-
-    // 选择sku
-
 
     // 页面自动滚动到底部，确保获取懒加载的信息
     await page.evaluate(() => {
@@ -67,7 +67,7 @@ const puppeteer = require('puppeteer');
             resolve(arr)
         })
     });
-    console.log(res);
+    // console.log(res);
 
     // // 获取页面源代码信息
     // const bodyHandle = await page.$('body');
@@ -76,6 +76,20 @@ const puppeteer = require('puppeteer');
     // console.log(html);
 
     // 获取完整的页面截图
-    await page.screenshot({path: 'screenshot.png', fullPage: true});
+    // await page.screenshot({path: 'screenshot.png', fullPage: true});
     // await browser.close();
+
+    // 监听到导航栏url变化时，跳转到1688详情页
+    await page.on('framenavigated', frame => {
+
+        // if (frame.parentFrame() === null) {
+        //     console.log(frame._url);
+        // } else {
+        //     console.log(frame._url);
+        // }
+    })
+    await page.goto(url, {
+        waitUntil: 'load'
+    });
+
 })();
