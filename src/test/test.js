@@ -39,8 +39,9 @@ const puppeteer = require('puppeteer');
 
     // 如果有leading SKU属性 obj-leading
     let hasLeadSKU = await page.$('.obj-leading')
+    let leadArr
     if (!!hasLeadSKU) {
-        const leadArr = await page.$$eval('.list-leading a', (e, firstSku) => {
+        leadArr = await page.$$eval('.list-leading a', (e, firstSku) => {
             let arr = [];
             let first_index = 0
             for (let i = 0; i < e.length; i++) {
@@ -52,8 +53,11 @@ const puppeteer = require('puppeteer');
             }
             return {arr, first_index};
         }, firstSku);
-        console.log(leadArr);
     }
+    leadArr.first_index += 1
+    // 拿到头部sku下标，开始点击
+    await page.tap('.list-leading li:nth-child(' + leadArr.first_index + ')');
+
 
     // 获取商品sku数组
     const skuArr = await page.$$eval('.table-sku .name', e => {
