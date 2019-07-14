@@ -23,6 +23,12 @@ const puppeteer = require('puppeteer');
         waitUntil: 'load'
     });
 
+
+    // props
+    let firstSku = '卡其';
+    let secondSku = '175cm以上';
+
+
     // 如果有SKU展开按钮，则点击
     let hasMore = await page.$eval('.obj-expand', e => {
         return e.style.display
@@ -31,17 +37,21 @@ const puppeteer = require('puppeteer');
         await page.tap('.obj-expand')
     }
 
-
     // 如果有leading SKU属性 obj-leading
     let hasLeadSKU = await page.$('.obj-leading')
     if (!!hasLeadSKU) {
-        const leadArr = await page.$$eval('.list-leading a', e => {
+        const leadArr = await page.$$eval('.list-leading a', (e, firstSku) => {
             let arr = [];
+            let first_index = 0
             for (let i = 0; i < e.length; i++) {
                 arr.push(e[i].title)
+                // 这个函数不能在内部操作，只能返回函数执行的值，返回头部sku的当前需要被点击的index
+                if (e[i].title == firstSku) {
+                    first_index = i
+                }
             }
-            return arr;
-        });
+            return {arr, first_index};
+        }, firstSku);
         console.log(leadArr);
     }
 
