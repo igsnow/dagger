@@ -16,30 +16,44 @@ const puppeteer = require('puppeteer');
         height: 900
     });
 
-    let detailUrl = 'https://detail.1688.com/offer/561232764548.html?tracelog=cps&clickid=3d16a2c1e1e00b819e68ce6d535f2a9a';   // 单属性、不可展开
-    // let detailUrl = 'https://detail.1688.com/offer/590864628132.html?tracelog=cps&clickid=21f794860a79469308613e79ab4d77a0'       // 单属性、可展开
+    // let detailUrl = 'https://detail.1688.com/offer/561232764548.html?tracelog=cps&clickid=3d16a2c1e1e00b819e68ce6d535f2a9a';      // SKU单属性、不可展开
+    // let detailUrl = 'https://detail.1688.com/offer/590864628132.html?tracelog=cps&clickid=21f794860a79469308613e79ab4d77a0'       // SKU单属性、可展开
+    let detailUrl = 'https://detail.1688.com/offer/539920906466.html?tracelog=cps&clickid=4cfcf6948b3b96be76ab44c199ee173d'          //  SKU双属性、不可展开
     await page.goto(detailUrl, {
         waitUntil: 'load'
     });
 
     // 如果有SKU展开按钮，则点击
-    let isMore = await page.$eval('.obj-expand', e => {
+    let hasMore = await page.$eval('.obj-expand', e => {
         return e.style.display
     });
-    console.log(!!isMore);
-    if (!!isMore) {
+    if (!!hasMore) {
         await page.tap('.obj-expand')
     }
 
+
+    // 如果有leading SKU属性 obj-leading
+    let hasLeadSKU = await page.$('.obj-leading')
+    if (!!hasLeadSKU) {
+        const leadArr = await page.$$eval('.list-leading a', e => {
+            let arr = [];
+            for (let i = 0; i < e.length; i++) {
+                arr.push(e[i].title)
+            }
+            return arr;
+        });
+        console.log(leadArr);
+    }
+
     // 获取商品sku数组
-    const res = await page.$$eval('.table-sku .name', e => {
+    const skuArr = await page.$$eval('.table-sku .name', e => {
         let arr = [];
         for (let i = 0; i < e.length; i++) {
             arr.push(e[i].children[0].innerHTML)
         }
         return arr;
     });
-    console.log(res);
+    console.log(skuArr);
 
     // await page.waitFor(2000);
     // await page.focus('.amount-input');
