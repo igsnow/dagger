@@ -19,22 +19,22 @@ const puppeteer = require('puppeteer');
     // 先跳转到登录页
     let loginUrl = 'https://login.1688.com/member/signin.htm?spm=a260k.dacugeneral.2683862.3.6633436c8iuuzd&Done=https%3A%2F%2Fwww.1688.com%2F';
     // let detailUrl = 'https://detail.1688.com/offer/561232764548.html?tracelog=cps&clickid=3d16a2c1e1e00b819e68ce6d535f2a9a';      // SKU单属性、不可展开
-    let detailUrl = 'https://detail.1688.com/offer/559772796641.html?tracelog=cps&clickid=765f70be6e5b3a0899e7801479b1206b'       // SKU单属性、可展开
-    // let detailUrl = 'https://detail.1688.com/offer/539920906466.html?tracelog=cps&clickid=4cfcf6948b3b96be76ab44c199ee173d'          //  SKU双属性、不可展开
+    // let detailUrl = 'https://detail.1688.com/offer/559772796641.html?tracelog=cps&clickid=765f70be6e5b3a0899e7801479b1206b'       // SKU单属性、可展开
+    let detailUrl = 'https://detail.1688.com/offer/539920906466.html?tracelog=cps&clickid=1c3be55000cef1bdbb73ccb26c4aadf4'          //  SKU双属性、不可展开
     await page.goto(loginUrl, {
-        waitUntil: 'load'
+        // waitUntil: 'load'
     });
 
     // 监听到导航栏url变化时，当登录成功时跳转到1688详情页
     if (page.url() === loginUrl) {
         while (true) {
             await page.waitForNavigation({
-                waitUntil: 'load'
+                // waitUntil: 'load'
             })
             if (page.url() !== loginUrl) {
                 console.log('=>登录成功！')
                 await page.goto(detailUrl, {
-                    waitUntil: 'load'
+                    // waitUntil: 'load'
                 });
                 break;
             }
@@ -42,9 +42,9 @@ const puppeteer = require('puppeteer');
     }
 
     // sku属性
-    let firstSku = '卡其';
-    let secondSku = 'BTS展会自制卡';
-    let num = 3;
+    let firstSku = '米色';
+    let secondSku = '175cm以上';
+    let num = 4;
 
     // 如果有SKU更多展开按钮，则点击
     let hasMore = await page.$eval('.obj-expand', e => {
@@ -67,7 +67,7 @@ const puppeteer = require('puppeteer');
             let first_index = 0;
             for (let i = 0; i < e.length; i++) {
                 arr.push(e[i].title);
-                // (坑!!!)这个函数不能在内部操作，只能返回函数执行的值，返回头部sku的当前需要被点击的index
+                // (坑1)这个函数不能在内部操作，只能返回函数执行的值，返回头部sku的当前需要被点击的index
                 if (e[i].title == firstSku) {
                     first_index = i
                 }
@@ -108,18 +108,29 @@ const puppeteer = require('puppeteer');
 
     // 数量输入框得聚焦，不然sku下方的价格统计不显示
     let selector = '.table-sku tr:nth-child(' + skuObj.second_index + ') .amount-input';
+    let up = '.table-sku tr:nth-child(' + skuObj.second_index + ') .amount-up';
+    let down = '.table-sku tr:nth-child(' + skuObj.second_index + ') .amount-down';
     await page.focus(selector);
     console.log('=>sku数量输入框已获取焦点,等待输入...');
 
     await page.waitFor(300);
 
-    // 自动填写商品数量
+    // (坑2)自动填写商品数量，但是下方价格不改变，于是先自增一再减一，价格正确显示
     await page.$eval(selector, (input, num) => input.value = num, num);
+    await page.waitFor(300);
+    await page.tap(up);
+    await page.waitFor(300);
+    await page.tap(down);
     console.log('=>数量已自动填充完成!');
+
+    // 失去输入框焦点
+    // await page.evaluate((selector) => {
+    //     document.querySelector(selector).blur()
+    // }, selector)
 
     await page.waitFor(500);
 
     // 加入购物车
-    // await page.tap('.do-cart')
-    // console.log('加入购物车成功!')
+    await page.tap('.do-cart')
+    console.log('加入购物车成功!')
 })();
