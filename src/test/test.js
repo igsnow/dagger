@@ -18,8 +18,8 @@ const puppeteer = require('puppeteer');
 
     // 先跳转到登录页
     let loginUrl = 'https://login.1688.com/member/signin.htm?spm=a260k.dacugeneral.2683862.3.6633436c8iuuzd&Done=https%3A%2F%2Fwww.1688.com%2F';
-    let detailUrl = 'https://detail.1688.com/offer/561232764548.html?tracelog=cps&clickid=3d16a2c1e1e00b819e68ce6d535f2a9a';      // SKU单属性、不可展开
-    // let detailUrl = 'https://detail.1688.com/offer/559772796641.html?tracelog=cps&clickid=765f70be6e5b3a0899e7801479b1206b'       // SKU单属性、可展开
+    // let detailUrl = 'https://detail.1688.com/offer/561232764548.html?tracelog=cps&clickid=3d16a2c1e1e00b819e68ce6d535f2a9a';      // SKU单属性、不可展开
+    let detailUrl = 'https://detail.1688.com/offer/559772796641.html?tracelog=cps&clickid=765f70be6e5b3a0899e7801479b1206b'       // SKU单属性、可展开
     // let detailUrl = 'https://detail.1688.com/offer/539920906466.html?tracelog=cps&clickid=4cfcf6948b3b96be76ab44c199ee173d'          //  SKU双属性、不可展开
     await page.goto(loginUrl, {
         waitUntil: 'load'
@@ -32,7 +32,7 @@ const puppeteer = require('puppeteer');
                 waitUntil: 'load'
             })
             if (page.url() !== loginUrl) {
-                console.log('登录成功！')
+                console.log('=>登录成功！')
                 await page.goto(detailUrl, {
                     waitUntil: 'load'
                 });
@@ -52,8 +52,9 @@ const puppeteer = require('puppeteer');
     });
     if (!!hasMore) {
         await page.tap('.obj-expand');
-        console.log('展开更多sku列表...')
+        console.log('=>展开更多sku列表...')
     }
+
     // 延时，模拟用户操作时长
     await page.waitFor(300);
 
@@ -77,9 +78,11 @@ const puppeteer = require('puppeteer');
         leadObj.first_index += 1;
         // 拿到头部sku下标，开始点击
         await page.tap('.list-leading li:nth-child(' + leadObj.first_index + ')');
-        console.log('头部sku已选!')
+        console.log('=>头部sku已选!')
     }
+
     await page.waitFor(300);
+
     // 获取商品sku数组
     const skuObj = await page.$$eval('.table-sku .name', (e, secondSku) => {
         let arr = [];
@@ -104,13 +107,18 @@ const puppeteer = require('puppeteer');
     skuObj.second_index += 1;
 
     // 数量输入框得聚焦，不然sku下方的价格统计不显示
-    await page.focus('.table-sku tr:nth-child(' + skuObj.second_index + ') .amount-input');
-    console.log('sku数量输入框已获取焦点,等待输入...');
+    let selector = '.table-sku tr:nth-child(' + skuObj.second_index + ') .amount-input';
+    await page.focus(selector);
+    console.log('=>sku数量输入框已获取焦点,等待输入...');
+
     await page.waitFor(300);
+
     // 自动填写商品数量
-    await page.$eval('.table-sku tr:nth-child(' + skuObj.second_index + ') .amount-input', (input, num) => input.value = num, num);
-    console.log('数量已自动填充完成!');
+    await page.$eval(selector, (input, num) => input.value = num, num);
+    console.log('=>数量已自动填充完成!');
+
     await page.waitFor(500);
+
     // 加入购物车
     // await page.tap('.do-cart')
     // console.log('加入购物车成功!')
