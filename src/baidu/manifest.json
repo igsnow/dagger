@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "BaiduSeachString",
+  "name": "自动采购",
   "version": "0.1.0",
-  "description": "问小度",
+  "description": "1688 order",
   "icons": {
     "16": "sicon.png",
     "48": "sicon.png",
@@ -10,10 +10,16 @@
   },
   "background": {
     "scripts": [
-      "BDSCHbackground.js"
+      "background.js"
     ]
   },
   "permissions": [
     "contextMenus"
-  ]
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://localhost/*",
+      "*://vwork.vcanbuy.com/*"
+    ]
+  }
 }
