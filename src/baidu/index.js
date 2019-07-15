@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-let mainFn = (async () => {
+let orderFn = (async () => {
     const browser = await puppeteer.launch({
         headless: false,                     // 是否显示浏览器
         args: ['--start-maximized']          // 是否全屏显示
@@ -148,4 +148,8 @@ let mainFn = (async () => {
     // 加入购物车
     await page.tap('.do-cart')
     console.log('加入购物车成功!')
-})();
+})()
+
+module.exports = orderFn
+
+

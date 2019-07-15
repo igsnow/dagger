@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "自动采购",
+  "name": "自动下单",
   "version": "0.1.0",
-  "description": "1688 order",
+  "description": "1688 auto order",
   "icons": {
     "16": "sicon.png",
     "48": "sicon.png",
@@ -13,6 +13,17 @@
       "background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://localhost/*",
+        "*://vwork.vcanbuy.com/*"
+      ],
+      "js": [
+        "content-script.js"
+      ]
+    }
+  ],
   "permissions": [
     "contextMenus"
   ],
