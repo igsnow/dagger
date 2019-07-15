@@ -18,10 +18,10 @@ const puppeteer = require('puppeteer');
 
     // 先跳转到登录页
     let loginUrl = 'https://login.1688.com/member/signin.htm?spm=a260k.dacugeneral.2683862.3.6633436c8iuuzd&Done=https%3A%2F%2Fwww.1688.com%2F';
-    let detailUrl = 'https://detail.1688.com/offer/561232764548.html?tracelog=cps&clickid=1f7533a926bc68461bebb935ae87f947';      // SKU单属性、不可展开
+    // let detailUrl = 'https://detail.1688.com/offer/561232764548.html?tracelog=cps&clickid=1f7533a926bc68461bebb935ae87f947';      // SKU单属性、不可展开
     // let detailUrl = 'https://detail.1688.com/offer/529394257204.html?tracelog=cps&clickid=61e0b598ce01cda708dbaf64d3100e7a'       // 2、SKU单属性、可展开
     // let detailUrl = 'https://detail.1688.com/offer/539920906466.html?tracelog=cps&clickid=1c3be55000cef1bdbb73ccb26c4aadf4';      // 3、SKU双属性、不可展开
-    // let detailUrl = 'https://detail.1688.com/offer/596119228976.html?tracelog=cps&clickid=e50d2e6469c9988ecb867dc0e2df166d';      // 4、SKU双属性、可展开
+    let detailUrl = 'https://detail.1688.com/offer/596119228976.html?tracelog=cps&clickid=e50d2e6469c9988ecb867dc0e2df166d';      // 4、SKU双属性、可展开
 
     await page.goto(loginUrl, {
         // waitUntil: 'load'
@@ -44,8 +44,8 @@ const puppeteer = require('puppeteer');
     }
 
     // 1、SKU单属性、不可展开
-    let secondSku = '计时器XL-331黑色';
-    let num = 30;
+    // let secondSku = '计时器XL-331黑色';
+    // let num = 30;
 
     // 2、SKU单属性、可展开
     // let secondSku = '2.1mm圆形20夹';
@@ -57,9 +57,9 @@ const puppeteer = require('puppeteer');
     // let num = 4;
 
     // 4、SKU双属性、可展开
-    // let firstSku = '白色（001）';
-    // let secondSku = '2XL';
-    // let num = 5;
+    let firstSku = '白色（001）';
+    let secondSku = '2XL';
+    let num = 5;
 
     // 如果有SKU更多展开按钮，则点击
     let hasMore = await page.$eval('.obj-expand', e => {
