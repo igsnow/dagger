@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="./jquery-1.11.1.js"></script>
     <script src="./popuop.js"></script>
     <style>
-        button {
-            width: 100px;
+        .container {
+            width: 200px;
+            height: 150px;
         }
 
-        button ~ button {
-            margin-top: 10px;
+        #btn {
+            width: 80px;
+            height: 40px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-<button id="btnCopy">Copy</button>
-<button id="btnPaste">Paste</button>
+<div class="container">
+    <button id="btn">自动采购</button>
+</div>
 </body>
 </html>

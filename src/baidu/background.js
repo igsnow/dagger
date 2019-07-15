@@ -1,5 +1,5 @@
 // 常驻页面，类似于全局函数。缓存从页面获取的采购msg
-let msgObj = {}
+window.msg = null
 
 chrome.contextMenus.create({
     title: '使用小度搜索：%s',
@@ -10,7 +10,7 @@ chrome.contextMenus.create({
 });
 
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
-    msgObj = request
+    window.msg = request
     let msg = JSON.stringify(request)
     alert(msg)
     // 可以针对sender做一些白名单检查
