@@ -7,7 +7,7 @@ function injectCustomJs(jsPath) {
     temp.setAttribute('type', 'text/javascript');
     temp.src = chrome.extension.getURL(jsPath);
     temp.onload = function () {
-        this.parentNode.removeChild(this);
+        // this.parentNode.removeChild(this);
     };
     document.body.appendChild(temp);
 }
