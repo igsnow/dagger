@@ -26,11 +26,14 @@
         "*://localhost/*",
         "*://test.wvcb.qilie.biz/*",
         "*://hk.vwork.vcanbuy.com/*",
-        "*://vwork.vcanbuy.com/*"
+        "*://vwork.vcanbuy.com/*",
+        "https://detail.1688.com/offer/*",
+        "https://www.baidu.com/"
       ],
       "js": [
         "jquery-3.3.1.min.js",
-        "content_script.js"
+        "content_script.js",
+        "auto.js"
       ],
       "run_at": "document_start"
     }
@@ -38,14 +41,18 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "background"
+    "background",
+    "http://*/*",
+    "https://*/*",
+    "https://www.baidu.com/"
   ],
   "externally_connectable": {
     "matches": [
       "*://localhost/*",
       "*://test.wvcb.qilie.biz/*",
       "*://hk.vwork.vcanbuy.com/*",
-      "*://vwork.vcanbuy.com/*"
+      "*://vwork.vcanbuy.com/*",
+      "https://www.baidu.com/"
     ]
   }
 }

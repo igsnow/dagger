@@ -8,11 +8,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             }
         })
     }
-
-    // 新开tab页
-    if (request.cmd == 'oneTab') {
-        alert(request.value);
-    }
-
     sendResponse('我收到了你的消息！');
 });
+
