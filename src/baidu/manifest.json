@@ -11,8 +11,8 @@
   },
   "background": {
     "scripts": [
-      "background.js",
-      "jquery-1.11.1.js"
+      "jquery-3.3.1.js",
+      "background.js"
     ]
   },
   "browser_action": {
@@ -23,10 +23,13 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "*://localhost/*",
+        "*://test.wvcb.qilie.biz/*",
+        "*://hk.vwork.vcanbuy.com/*",
+        "*://vwork.vcanbuy.com/*"
       ],
       "js": [
-        "jquery-1.11.1.js",
+        "jquery-3.3.1.js",
         "content_script.js"
       ],
       "run_at": "document_start"

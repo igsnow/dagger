@@ -2,6 +2,12 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.cmd == 'test') {
         alert(request.value);
+
+        $('.fxkbtn').each(function (index, element) {
+            if ($(this).css("display") != "none") {
+                $(this).click()
+            }
+        })
     }
     sendResponse('我收到了你的消息！');
 });
