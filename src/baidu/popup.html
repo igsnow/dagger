@@ -4,23 +4,30 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="./jquery-1.11.1.js"></script>
-    <script src="./popuop.js"></script>
+    <script src="./popup.js"></script>
     <style>
         .container {
-            width: 200px;
-            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            height: 100px;
+            background: #ff8634;
         }
 
         #btn {
             width: 80px;
             height: 40px;
             text-align: center;
+            color: #ff8634;
+            font-size: 14px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <button id="btn">自动采购</button>
+    <button id="btn">批量采购</button>
 </div>
 </body>
 </html>

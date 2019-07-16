@@ -9,34 +9,38 @@
     "48": "sicon.png",
     "128": "sicon.png"
   },
-  "browser_action": {
-    "default_icon": "sicon.png",
-    "default_title": "action",
-    "default_popup": "popup.html"
-  },
   "background": {
     "scripts": [
-      "background.js"
+      "background.js",
+      "jquery-1.11.1.js"
     ]
+  },
+  "browser_action": {
+    "default_icon": "sicon.png",
+    "default_title": "1688批量下单",
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {
       "matches": [
-        "*://localhost/*",
-        "*://vwork.vcanbuy.com/*"
+        "<all_urls>"
       ],
       "js": [
-        "content-script.js",
-        "jquery-1.11.1.js"
-      ]
+        "jquery-1.11.1.js",
+        "content_script.js"
+      ],
+      "run_at": "document_start"
     }
   ],
   "permissions": [
-    "contextMenus"
+    "activeTab",
+    "tabs"
   ],
   "externally_connectable": {
     "matches": [
       "*://localhost/*",
+      "*://test.wvcb.qilie.biz/*",
+      "*://hk.vwork.vcanbuy.com/*",
       "*://vwork.vcanbuy.com/*"
     ]
   }
