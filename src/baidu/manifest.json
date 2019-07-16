@@ -9,50 +9,39 @@
     "48": "sicon.png",
     "128": "sicon.png"
   },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
   "background": {
     "scripts": [
       "jquery-3.3.1.min.js",
       "background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "jquery-3.3.1.min.js",
+        "content_script.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
   "browser_action": {
     "default_icon": "sicon.png",
     "default_title": "1688批量下单",
     "default_popup": "popup.html"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://localhost/*",
-        "*://test.wvcb.qilie.biz/*",
-        "*://hk.vwork.vcanbuy.com/*",
-        "*://vwork.vcanbuy.com/*",
-        "https://detail.1688.com/offer/*",
-        "https://www.baidu.com/"
-      ],
-      "js": [
-        "jquery-3.3.1.min.js",
-        "content_script.js",
-        "auto.js"
-      ],
-      "run_at": "document_start"
-    }
-  ],
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "background",
-    "http://*/*",
-    "https://*/*",
-    "https://www.baidu.com/"
-  ],
   "externally_connectable": {
     "matches": [
-      "*://localhost/*",
-      "*://test.wvcb.qilie.biz/*",
-      "*://hk.vwork.vcanbuy.com/*",
-      "*://vwork.vcanbuy.com/*",
-      "https://www.baidu.com/"
+      "*://localhost/*"
     ]
   }
 }
