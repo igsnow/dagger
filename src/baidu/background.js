@@ -17,22 +17,12 @@ function sendMessageToContentScript(message, callback) {
     });
 }
 
-// 向新页面注入js
-function evalNewPageScript(detail, callback) {
-    getCurrentTabId((tabId) => {
-        chrome.tabs.executeScript(tabId, detail, function (response) {
-            if (callback) callback(response);
-        });
-    });
-}
-
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
     window.data.push(request)
     let d = JSON.stringify(window.data)
 
-    chrome.tabs.create({url: request.msg.url});
 
-    // sendMessageToContentScript({id: getCurrentTabId(), value: request.msg});
+    chrome.tabs.create({url: request.msg.url});
 
 
     // 可以针对sender做一些白名单检查

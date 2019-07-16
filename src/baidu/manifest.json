@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "自动下单",
   "version": "0.1.0",
-  "author": "zhangzhiyong",
+  "author": "zhangzhiyong@vcanbuy",
   "description": "1688 auto order",
   "icons": {
     "16": "sicon.png",
@@ -12,6 +12,10 @@
   "permissions": [
     "activeTab",
     "tabs",
+    "notifications",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
     "http://*/*",
     "https://*/*"
   ],
@@ -24,8 +28,7 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*",
-        "https://*/*"
+        "<all_urls>"
       ],
       "js": [
         "jquery-3.3.1.min.js",
@@ -43,5 +46,8 @@
     "matches": [
       "*://localhost/*"
     ]
-  }
+  },
+  "web_accessible_resources": [
+    "auto.js"
+  ]
 }
