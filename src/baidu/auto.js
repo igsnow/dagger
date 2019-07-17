@@ -12,8 +12,8 @@ function get1688($) {
     // if (ipt.value) btn.click()
 
 
-    let ipt = document.getElementsByClassName("amount-input")
-    ipt[1].value = 5
+    // let ipt = document.getElementsByClassName("amount-input")
+    // ipt[1].value = 5
 
 
     // document.getElementsByClassName("amount-up ")[0].click()

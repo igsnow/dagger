@@ -33,8 +33,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         })
     }
 
+    if (request.cmd == 'sku') {
+        console.log(request.value);
+    }
+
+
     sendResponse('我收到了你的消息！');
 });
+
 
 // detail.1688.com
 if (location.host == 'detail.1688.com') {
