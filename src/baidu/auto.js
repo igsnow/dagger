@@ -4,7 +4,6 @@ function sendMessageToContentScriptByPostMessage(type, data) {
 }
 
 function get1688($) {
-    //获取抓取的所有信息，然后返回给content
     let data = {}
 
     // let ipt = document.getElementById('kw')
@@ -14,8 +13,9 @@ function get1688($) {
 
 
     let ipt = document.getElementsByClassName("amount-input")
-    console.log(ipt);
-    // ipt[1].value = '2'
+    ipt[1].value = 5
+
+
     // document.getElementsByClassName("amount-up ")[0].click()
     // $(".amount-up").click()
     // $(".amount-up").eq(1)[0].click()
@@ -24,6 +24,14 @@ function get1688($) {
 
     sendMessageToContentScriptByPostMessage("1688", data)
 }
+
+
+window.addEventListener("message", function (e) {
+    if (e.data && e.data.cmd == 'sku') {
+        console.log(e.data);
+        alert('获取消息成功!')
+    }
+}, false);
 
 
 // 通过DOM事件发送消息给content-script

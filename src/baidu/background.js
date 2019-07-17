@@ -17,10 +17,16 @@ function sendMessageToContentScript(message, callback) {
     });
 }
 
+function sendMsgToAutoByPostMsg(type, data) {
+    window.postMessage({cmd: type, data: data}, '*');
+}
+
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
     window.data.push(request)
     let d = JSON.stringify(window.data)
 
+    sendMessageToContentScript({cmd: 'sku', value: request.msg}, res => {
+    })
 
     chrome.tabs.create({url: request.msg.url});
     // chrome.tabs.create({url: 'https://www.baidu.com/'});
@@ -30,7 +36,6 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
     if (request.type == 'MsgFromPage') {
         sendResponse({type: 'MsgFromChrome', msg: 'Hello, I am chrome res~'});
     }
-
 });
 
 
