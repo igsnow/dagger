@@ -1,10 +1,5 @@
 // 共用页面的DOM，但是和页面的js是隔离的
 
-// 发送普通消息到content-script
-function sendMessageToContentScriptByPostMessage(type, data) {
-    window.postMessage({cmd: type, data: data}, '*');
-}
-
 //向页面注入JS
 function injectCustomJs(jsPath) {
     jsPath = jsPath || 'auto.js';
@@ -17,7 +12,6 @@ function injectCustomJs(jsPath) {
     document.body.appendChild(temp);
 }
 
-//直接提交表单，
 window.addEventListener("message", function (e) {
     if (e.data && e.data.cmd == '1688') {
         //传递给background
@@ -37,11 +31,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 $(this).click()
             }
         })
-    }
-
-    if (request.cmd == 'sku') {
-        // alert(JSON.stringify(request.value));
-        sendMessageToContentScriptByPostMessage("sku", request.value)
     }
 
     sendResponse('我收到了你的消息！');

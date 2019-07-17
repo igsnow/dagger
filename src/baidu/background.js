@@ -36,6 +36,8 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
     if (request.type == 'MsgFromPage') {
         sendResponse({type: 'MsgFromChrome', msg: 'Hello, I am chrome res~'});
     }
+
+    return true
 });
 
 

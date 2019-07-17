@@ -25,15 +25,6 @@ function get1688($) {
     sendMessageToContentScriptByPostMessage("1688", data)
 }
 
-
-window.addEventListener("message", function (e) {
-    if (e.data && e.data.cmd == 'sku') {
-        console.log(e.data);
-        alert('获取消息成功!')
-    }
-}, false);
-
-
 // 通过DOM事件发送消息给content-script
 (function ($) {
     if (location.host == 'detail.1688.com') {
