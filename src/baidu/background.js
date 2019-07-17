@@ -22,8 +22,8 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
     let d = JSON.stringify(window.data)
 
 
-    // chrome.tabs.create({url: request.msg.url});
-    chrome.tabs.create({url: 'https://www.baidu.com/'});
+    chrome.tabs.create({url: request.msg.url});
+    // chrome.tabs.create({url: 'https://www.baidu.com/'});
 
 
     // 可以针对sender做一些白名单检查

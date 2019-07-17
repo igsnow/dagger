@@ -7,7 +7,7 @@ function injectCustomJs(jsPath) {
     temp.setAttribute('type', 'text/javascript');
     temp.src = chrome.extension.getURL(jsPath);
     temp.onload = function () {
-        // this.parentNode.removeChild(this);
+        this.parentNode.removeChild(this);
     };
     document.body.appendChild(temp);
 }
@@ -19,7 +19,7 @@ window.addEventListener("message", function (e) {
         //chrome.runtime.sendMessage({host:"1688",data:e.data.data}, function(response) {
         //});
         console.log(e.data);
-        alert('下单成功')
+        // alert('下单成功')
     }
 }, false);
 
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 // detail.1688.com
-if (location.host == 'www.baidu.com') {
+if (location.host == 'detail.1688.com') {
     $(function () {
         injectCustomJs();
     })
