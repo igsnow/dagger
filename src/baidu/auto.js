@@ -25,6 +25,7 @@ function get1688($) {
     sendMessageToContentScriptByPostMessage("1688", data)
 }
 
+
 // 通过DOM事件发送消息给content-script
 (function ($) {
     if (location.host == 'detail.1688.com') {

@@ -19,8 +19,7 @@ function sendMessageToContentScript(message, callback) {
 
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
     window.data.push(request.msg)
-    let d = JSON.stringify(window.data)
-    // alert(d)
+    // alert(JSON.stringify(window.data));
 
     chrome.tabs.create({url: request.msg.url});
     // chrome.tabs.create({url: 'https://www.baidu.com/'});
@@ -29,28 +28,27 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
     if (request.type == 'MsgFromPage') {
         sendResponse({type: 'MsgFromChrome', msg: 'Hello, I am chrome res~'});
     }
-
     return true
 });
 
 // 新建标签页时触发
 chrome.tabs.onCreated.addListener(function (newTab) {
+    // alert(JSON.stringify(window.data) + ':' + window.data.length);
     // 获取所有页面的tab
     chrome.tabs.getAllInWindow(newTab.windowId, function (tabs) {
-        // alert(JSON.stringify(tabs))
         tabs.forEach(function (otherTab, index, arr) {
             // 筛选出新建的tab
             if (otherTab.url === newTab.url) {
                 setTimeout(() => {
                     chrome.tabs.sendMessage(newTab.id, {
                         cmd: 'sku',
-                        value: window.data[arr.length - 1 - index]
+                        value: window.data[window.data.length - 1]
                     }, function (response) {
                         console.log(response);
                     });
                 }, 1000)   // 不延时的话会报错
-                // alert(JSON.stringify(window.data[arr.length - 1 - index]))
             }
+
         });
     });
     return true
