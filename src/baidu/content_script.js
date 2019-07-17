@@ -15,10 +15,7 @@ function injectCustomJs(jsPath) {
 
 window.addEventListener("message", function (e) {
     if (e.data && e.data.cmd == '1688') {
-        //传递给background
-        //chrome.runtime.sendMessage({host:"1688",data:e.data.data}, function(response) {
-        //});
-        console.log(e.data);
+        // console.log(e.data);
         // alert('下单成功')
     }
 }, false);
@@ -40,8 +37,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     sendResponse('我收到了你的消息！');
 });
 
+
 // detail.1688.com
 if (location.host == 'detail.1688.com') {
+
+    console.log(6666666)
+
+
     $(function () {
         injectCustomJs();
     })

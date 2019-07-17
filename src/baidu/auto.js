@@ -12,8 +12,13 @@ function get1688($) {
     // if (ipt.value) btn.click()
 
 
-    // let ipt = document.getElementsByClassName("amount-input")
-    // ipt[1].value = 5
+    window.onload = function () {
+        console.log(document.getElementsByClassName("amount-input"));
+        let ipt = document.getElementsByClassName("amount-input")
+        if (ipt && ipt[0]) ipt[0].value = 5
+
+        document.getElementsByClassName("amount-up ")[0].click()
+    }
 
 
     // document.getElementsByClassName("amount-up ")[0].click()
@@ -23,6 +28,10 @@ function get1688($) {
     $(".region-detail-title").css("background-color", "red")
 
     sendMessageToContentScriptByPostMessage("1688", data)
+
+
+    // let tb = document.querySelectorAll('a')
+    // console.log(tb);
 }
 
 
