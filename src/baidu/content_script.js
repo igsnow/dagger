@@ -31,10 +31,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 if (location.host == 'detail.1688.com') {
     window.onload = function () {
-        console.log(skuObj);
-        console.log(num);
-
-
         // 如果有SKU更多展开按钮，则点击
         let hasMore = $(".obj-expand");
         if (hasMore && hasMore[0]) {
@@ -55,9 +51,7 @@ if (location.host == 'detail.1688.com') {
                 let firstSkuName = firstSkuEle[0].innerHTML;
                 let name = getSkuValByName(firstSkuName, skuObj);
                 firstSku = skuObj[name];
-                console.log(firstSku);
             }
-
 
             let aList = $('.list-leading a');
             let arr = [];
@@ -86,7 +80,6 @@ if (location.host == 'detail.1688.com') {
                 let secondSkuName = secondSkuEle[0].innerHTML;
                 let name = getSkuValByName(secondSkuName, skuObj)
                 secondSku = skuObj[name];
-                console.log(secondSku);
             }
 
             let nList = $('.table-sku .name');
