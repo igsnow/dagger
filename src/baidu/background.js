@@ -42,10 +42,10 @@ chrome.tabs.onCreated.addListener(function (newTab) {
                         cmd: 'sku',
                         value: window.data[0]
                     }, function (response) {
-                        alert('tab content的回复：' + response);
+                        // alert('tab content的回复：' + response);
                     });
                     window.data.splice(0, 1)
-                }, 1000)   // 不延时的话会报错
+                }, 0)   // 不延时的话会报错
             }
         });
     });

@@ -134,7 +134,7 @@ if (location.host == 'detail.1688.com') {
     console.log('不是1688页面!')
 }
 
-
+// 给sku属性名做兼容，比如页面元素是返回尺码（双），带个单位，但接口返回'尺码'，做个兼容
 function getSkuValByName(name, obj) {
     for (let i in obj) {
         if (obj.hasOwnProperty(i)) {
