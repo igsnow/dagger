@@ -22,7 +22,6 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
     // alert(JSON.stringify(window.data))
 
     chrome.tabs.create({url: request.msg.url});
-    // chrome.tabs.create({url: 'https://www.baidu.com/'});
 
 
     // 可以针对sender做一些白名单检查
@@ -43,7 +42,7 @@ chrome.tabs.onCreated.addListener(function (newTab) {
                         cmd: 'sku',
                         value: window.data[0]
                     }, function (response) {
-                        console.log(response);
+                        alert('tab content的回复：' + response);
                     });
                     window.data.splice(0, 1)
                 }, 1000)   // 不延时的话会报错

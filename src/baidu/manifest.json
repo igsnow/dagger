@@ -32,7 +32,7 @@
         "jquery-3.3.1.min.js",
         "content_script.js"
       ],
-      "run_at": "document_end"
+      "run_at": "document_start"
     }
   ],
   "browser_action": {
@@ -44,8 +44,5 @@
     "matches": [
       "*://localhost/*"
     ]
-  },
-  "web_accessible_resources": [
-    "auto.js"
-  ]
+  }
 }
