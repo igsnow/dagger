@@ -39,10 +39,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 
 if (location.host == 'detail.1688.com') {
-    // 4、SKU双属性、可展开
-    let firstSku = '黑色';
-    let secondSku = '38';
-    let num = 5;
+
+    let firstSku = '咖啡';
+    let secondSku = '大本';
+    let num = 3;
 
     window.onload = function () {
         // 如果有SKU更多展开按钮，则点击
@@ -60,7 +60,7 @@ if (location.host == 'detail.1688.com') {
         if (hasObjLead.length) {
             let aList = $('.list-leading a');
             let arr = [];
-            let first_index = 0;
+            let first_index;
             for (let i = 0; i < aList.length; i++) {
                 arr.push(aList[i].title);
                 if (aList[i].title == firstSku) {
@@ -69,10 +69,12 @@ if (location.host == 'detail.1688.com') {
             }
             console.log({arr, first_index});
             // 拿到头部sku下标，开始点击
-            if ($('.list-leading a') && $('.list-leading a')[first_index]) {
-                $('.list-leading a')[first_index].click();
+            if (!!first_index) {
+                if ($('.list-leading a') && $('.list-leading a')[first_index]) {
+                    $('.list-leading a')[first_index].click();
+                    console.log('=>头部sku已选!')
+                }
             }
-            console.log('=>头部sku已选!')
         }
 
         // 是否有数量选择sku
@@ -80,7 +82,7 @@ if (location.host == 'detail.1688.com') {
         if (hasObjSku.length) {
             let nList = $('.table-sku .name');
             let arr = [];
-            let second_index = 0;
+            let second_index;
             for (let i = 0; i < nList.length; i++) {
                 // 如果sku有图片，则sku取span标签的title值
                 if (nList[i].children[0].title) {
@@ -97,28 +99,37 @@ if (location.host == 'detail.1688.com') {
             }
             console.log({arr, second_index});
 
-            // (坑)自动填写商品数量，但是下方价格不改变，于是先自增一再减一，价格正确显示
-            let ipt = $('.table-sku tr:nth-child(' + second_index + ') .amount-input');
-            let up = $('.table-sku tr:nth-child(' + second_index + ') .amount-up');
-            let down = $('.table-sku tr:nth-child(' + second_index + ') .amount-down');
-            if (ipt && ipt[0]) {
-                ipt[0].value = num;
+            if (!!second_index) {
+                // (坑)自动填写商品数量，但是下方价格不改变，于是先自增一再减一，价格正确显示
+                let ipt = $('.table-sku tr:nth-child(' + second_index + ') .amount-input');
+                let up = $('.table-sku tr:nth-child(' + second_index + ') .amount-up');
+                let down = $('.table-sku tr:nth-child(' + second_index + ') .amount-down');
+                if (ipt && ipt[0]) {
+                    ipt[0].value = num;
+                }
+                if (up && up[0]) {
+                    up[0].click()
+                }
+                if (down && down[0]) {
+                    down[0].click()
+                }
+                console.log('=>数量已自动填充完成!');
             }
-            if (up && up[0]) {
-                up[0].click()
-            }
-            if (down && down[0]) {
-                down[0].click()
-            }
-            console.log('=>数量已自动填充完成!');
         }
 
         // 点击加入购物车按钮
         let cart = $('.do-cart')
         if (cart && cart[0]) {
             cart[0].click()
+            // 是否加入购物车成功
+            let tip = $(".widget-dialog")
+            if (tip && tip[0]) {
+                let isShow = hasMore[0].style.display;
+                if (!!isShow) {
+                    console.log('=>加入购物车成功!')
+                }
+            }
         }
-        console.log('=>加入购物车成功!')
     };
 
 
