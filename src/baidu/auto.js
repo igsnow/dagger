@@ -11,27 +11,7 @@ function get1688($) {
     // ipt.value = '手机'
     // if (ipt.value) btn.click()
 
-
-    window.onload = function () {
-        console.log(document.getElementsByClassName("amount-input"));
-        let ipt = document.getElementsByClassName("amount-input")
-        if (ipt && ipt[0]) ipt[0].value = 5
-
-        document.getElementsByClassName("amount-up ")[0].click()
-    }
-
-
-    // document.getElementsByClassName("amount-up ")[0].click()
-    // $(".amount-up").click()
-    // $(".amount-up").eq(1)[0].click()
-
-    $(".region-detail-title").css("background-color", "red")
-
     sendMessageToContentScriptByPostMessage("1688", data)
-
-
-    // let tb = document.querySelectorAll('a')
-    // console.log(tb);
 }
 
 
