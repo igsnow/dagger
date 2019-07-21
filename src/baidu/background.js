@@ -1,5 +1,6 @@
 // 常驻页面，存放一些全局的通用方法
 window.data = [];
+window.obj = {};
 
 // 获取当前选项卡ID
 function getCurrentTabId(callback) {
@@ -18,8 +19,9 @@ function sendMessageToContentScript(message, callback) {
 }
 
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
-    window.data.push(request.msg)
-    // alert(JSON.stringify(window.data))
+    window.data.push(request.msg);
+    window.obj = request.msg;
+
 
     chrome.tabs.create({url: request.msg.url});
 
@@ -31,25 +33,47 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
 });
 
 // 新建标签页时触发
-chrome.tabs.onCreated.addListener(function (newTab) {
-    // 获取所有页面的tab
-    chrome.tabs.query({windowId: newTab.windowId}, function (tabs) {
-        tabs.forEach(function (item, index, arr) {
-            // 筛选出新建的tab
-            if (item.url === newTab.url) {
-                setTimeout(() => {
-                    chrome.tabs.sendMessage(newTab.id, {
-                        cmd: 'sku',
-                        value: window.data[0]
-                    }, function (response) {
-                        // alert('tab content的回复：' + response);
-                    });
-                    window.data.splice(0, 1)
-                }, 0)   // 不延时的话会报错
-            }
-        });
-    });
+// chrome.tabs.onCreated.addListener(function (newTab) {
+//     // 获取所有页面的tab
+//     chrome.tabs.query({windowId: newTab.windowId}, function (tabs) {
+//         tabs.forEach(function (item, index, arr) {
+//             // 筛选出新建的tab
+//             if (item.url === newTab.url) {
+//                 setTimeout(() => {
+//                     chrome.tabs.sendMessage(newTab.id, {
+//                         cmd: 'sku',
+//                         value: window.data[0]
+//                     }, function (response) {
+//                         if (response) {
+//                             return true
+//                         }
+//                         // alert('tab content的回复：' + response);
+//                     });
+//                     window.data.splice(0, 1)
+//                 }, 3000)   // 不延时的话会报错
+//             }
+//         });
+//     });
+// });
+
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    if (changeInfo.status == 'complete') {
+        console.log(tab, window.data);
+        console.log(window.obj);
+        chrome.tabs.query({}, function (tabs) {
+            tabs.forEach(function (item, index, arr) {
+                if (item.id === tabId) {
+                    chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: window.data[0]});
+                }
+            });
+        })
+    }
 });
+
+
+// chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: window.data[0]});
+
+
 
 
 
