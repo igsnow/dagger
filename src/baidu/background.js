@@ -1,6 +1,5 @@
 // 常驻页面，存放一些全局的通用方法
 window.data = [];
-window.obj = {};
 
 // 获取当前选项卡ID
 function getCurrentTabId(callback) {
@@ -19,12 +18,11 @@ function sendMessageToContentScript(message, callback) {
 }
 
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
-    window.data.push(request.msg);
-    window.obj = request.msg;
-
-
-    chrome.tabs.create({url: request.msg.url});
-
+    chrome.tabs.create({url: request.msg.url}, function (tab) {
+        // 给新建的tab绑定一个id，便于后面更新页面时发送消息
+        request.msg.id = tab.id;
+        window.data.push(request.msg);
+    });
 
     // 可以针对sender做一些白名单检查
     if (request.type == 'MsgFromPage') {
@@ -32,46 +30,27 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
     }
 });
 
-// 新建标签页时触发
-// chrome.tabs.onCreated.addListener(function (newTab) {
-//     // 获取所有页面的tab
-//     chrome.tabs.query({windowId: newTab.windowId}, function (tabs) {
-//         tabs.forEach(function (item, index, arr) {
-//             // 筛选出新建的tab
-//             if (item.url === newTab.url) {
-//                 setTimeout(() => {
-//                     chrome.tabs.sendMessage(newTab.id, {
-//                         cmd: 'sku',
-//                         value: window.data[0]
-//                     }, function (response) {
-//                         if (response) {
-//                             return true
-//                         }
-//                         // alert('tab content的回复：' + response);
-//                     });
-//                     window.data.splice(0, 1)
-//                 }, 3000)   // 不延时的话会报错
-//             }
-//         });
-//     });
-// });
-
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete') {
         console.log(tab, window.data);
-        console.log(window.obj);
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
                 if (item.id === tabId) {
-                    chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: window.data[0]});
+                    chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: getCurTabMsg(window.data, tabId)});
                 }
             });
         })
     }
 });
 
-
-// chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: window.data[0]});
+// 根据tabId获取全局对象对应tab的消息
+function getCurTabMsg(data, id) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id === id) {
+            return data[i]
+        }
+    }
+}
 
 
 

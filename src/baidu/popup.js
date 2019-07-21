@@ -2,7 +2,7 @@
 let bg = chrome.extension.getBackgroundPage();
 $(function () {
     $("#btn").click(function () {
-        bg.sendMessageToContentScript({cmd: 'batch', value: '我要开始批量点击了！'}, res => {
+        bg.sendMessageToContentScript({cmd: 'batch', value: '我要开始批量采购了！'}, res => {
             console.log('来自vwork content的回复：' + res);
         });
     });
