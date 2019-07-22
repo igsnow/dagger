@@ -2,6 +2,8 @@ let skuObj = {};             // 从vwork接收的后台sku属性
 let firstSku = '';           // 第一个sku属性值，如切换选中的颜色等
 let secondSku = '';          // 第二个sku属性值
 let num = 0;                 // 采购数量
+let itemImg;                 // 商品图片
+let itemName;                // 商品名称
 let first_index;             // 第一个sku被点击的下标
 let second_index;            // 第二个sku填写数量的一行
 let hasFirstSku = false;     // 是否有第一个sku标识
@@ -25,8 +27,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             let res = request.value;
             skuObj = res && res.skuProps && JSON.parse(res.skuProps);
             num = res && res.skuNum;
+            itemImg = res && res.img;
+            itemName = res && res.name;
             sendResponse('sku消息已收到！');
         }
+
+        getActionTip(skuObj, num, itemImg, itemName);
 
         // 如果有SKU更多展开按钮，则点击
         let hasMore = $(".obj-expand");
@@ -136,6 +142,69 @@ function getSkuValByName(name, obj) {
         }
     }
 }
+
+function getActionTip(sku, num, img, name) {
+    console.log(sku, num, img, name);
+
+    let propsViewArr = [];
+    for (let i in sku) {
+        if (sku.hasOwnProperty(i)) {
+            propsViewArr.push(sku[i])
+        }
+    }
+    let skuStr = propsViewArr.join('/');
+
+
+    // 设置页面加载蒙层
+    let bgDiv = document.createElement("div");
+    bgDiv.style.background = "rgba(0, 0, 0, .5)";
+    bgDiv.style.position = "fixed";
+    bgDiv.style.top = "0";
+    bgDiv.style.left = "0";
+    bgDiv.style.right = "0";
+    bgDiv.style.bottom = "0";
+    bgDiv.style.opacity = "0.8";
+    bgDiv.style.zIndex = "2002";
+    document.body.appendChild(bgDiv);
+    // 订单详情提示框
+    let infoDiv = document.createElement("div");
+    infoDiv.style.background = "pink";
+    infoDiv.style.border = "1px solid red";
+    infoDiv.style.width = "300px";
+    infoDiv.style.height = "300px";
+    infoDiv.style.position = "fixed";
+    infoDiv.style.top = "150px";
+    infoDiv.style.right = "120px";
+    infoDiv.style.opacity = "0.8";
+    infoDiv.style.zIndex = "2001";
+    document.body.appendChild(infoDiv);
+    // 采购单sku详情
+    let skuDiv = document.createElement("div");
+    skuDiv.style.display = 'flex';
+    infoDiv.appendChild(skuDiv);
+    let imgE = document.createElement("img");
+    imgE.style.display = 'inline-block';
+    imgE.style.width = '50px';
+    imgE.style.height = '50px';
+    imgE.src = img;
+    skuDiv.appendChild(imgE);
+    let rightDiv = document.createElement("div");
+    infoDiv.appendChild(rightDiv);
+    let nameP = document.createElement("p");
+    nameP.innerHTML = name;
+    infoDiv.appendChild(nameP);
+    let skuP = document.createElement("p");
+    skuP.innerHTML = skuStr;
+    infoDiv.appendChild(skuP);
+
+    let tip = document.createElement("span");
+    tip.style.textAlign = 'center';
+    tip.innerHTML = '采购中......';
+    infoDiv.appendChild(tip);
+
+}
+
+
 
 
 
