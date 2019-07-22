@@ -168,10 +168,11 @@ function getActionTip(sku, num, img, name) {
     document.body.appendChild(bgDiv);
     // 订单详情提示框
     let infoDiv = document.createElement("div");
-    infoDiv.style.background = "pink";
-    infoDiv.style.border = "1px solid red";
-    infoDiv.style.width = "300px";
-    infoDiv.style.height = "300px";
+    infoDiv.style.background = "#E6A23C";
+    infoDiv.style.border = "1px solid #E6A23C";
+    infoDiv.style.borderRadius = '5px';
+    infoDiv.style.width = "450px";
+    infoDiv.style.height = "200px";
     infoDiv.style.position = "fixed";
     infoDiv.style.top = "150px";
     infoDiv.style.right = "120px";
@@ -181,26 +182,37 @@ function getActionTip(sku, num, img, name) {
     // 采购单sku详情
     let skuDiv = document.createElement("div");
     skuDiv.style.display = 'flex';
+    skuDiv.style.margin = '8px';
     infoDiv.appendChild(skuDiv);
     let imgE = document.createElement("img");
     imgE.style.display = 'inline-block';
-    imgE.style.width = '50px';
-    imgE.style.height = '50px';
+    imgE.style.width = '70px';
+    imgE.style.height = '70px';
     imgE.src = img;
     skuDiv.appendChild(imgE);
     let rightDiv = document.createElement("div");
-    infoDiv.appendChild(rightDiv);
+    rightDiv.style.marginLeft = '10px';
+    rightDiv.style.flex = '1';
+    rightDiv.style.width = 'calc(100% - 80px)';
+    rightDiv.style.fontSize = '15px';
+    rightDiv.style.fontWeight = 'bold';
+    rightDiv.style.color = '#000000';
+    skuDiv.appendChild(rightDiv);
     let nameP = document.createElement("p");
+    nameP.style.whiteSpace = 'nowrap';
+    nameP.style.overflow = 'hidden';
+    nameP.style.textOverflow = 'ellipsis';
+    nameP.style.lineHeight = '40px';
     nameP.innerHTML = name;
-    infoDiv.appendChild(nameP);
+    rightDiv.appendChild(nameP);
     let skuP = document.createElement("p");
-    skuP.innerHTML = skuStr;
-    infoDiv.appendChild(skuP);
+    skuP.innerHTML = skuStr + '     ×' + num;
+    rightDiv.appendChild(skuP);
 
-    let tip = document.createElement("span");
-    tip.style.textAlign = 'center';
-    tip.innerHTML = '采购中......';
-    infoDiv.appendChild(tip);
+    let tipDiv = document.createElement("div");
+    tipDiv.style.textAlign = 'center';
+    tipDiv.innerHTML = '采购中......';
+    infoDiv.appendChild(tipDiv);
 
 }
 
