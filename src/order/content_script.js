@@ -189,7 +189,7 @@ function getActionTip(sku, num, img, name, isDown) {
     infoDiv.style.top = "150px";
     infoDiv.style.right = "120px";
     infoDiv.style.opacity = "0.8";
-    infoDiv.style.zIndex = "2001";
+    infoDiv.style.zIndex = "2003";
     document.body.appendChild(infoDiv);
     // 采购单sku详情
     let skuDiv = document.createElement("div");
@@ -213,6 +213,7 @@ function getActionTip(sku, num, img, name, isDown) {
     nameP.style.overflow = 'hidden';
     nameP.style.textOverflow = 'ellipsis';
     nameP.style.lineHeight = '40px';
+    nameP.title = name;
     nameP.innerHTML = name;
     rightDiv.appendChild(nameP);
     let skuP = document.createElement("p");
