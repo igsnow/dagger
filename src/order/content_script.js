@@ -8,7 +8,6 @@ let first_index;             // 第一个sku被点击的下标
 let second_index;            // 第二个sku填写数量的一行
 let hasFirstSku = false;     // 是否有第一个sku标识
 
-
 // 共用页面的DOM，但是和页面的js是隔离的
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.cmd == 'batch') {
@@ -31,6 +30,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             itemName = res && res.name;
             sendResponse('sku消息已收到！');
         }
+
+        if (request.value == null) return;
 
         getActionTip(skuObj, num, itemImg, itemName, false);
 
@@ -134,7 +135,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     getActionTip(skuObj, num, itemImg, itemName, true);
                 }
             }
-        }, 3000)
+        }, 1500)
 
 
     } else {
@@ -154,9 +155,8 @@ function getSkuValByName(name, obj) {
     }
 }
 
+// 处理蒙层
 function getActionTip(sku, num, img, name, isDown) {
-    console.log(sku, num, img, name);
-
     let propsViewArr = [];
     for (let i in sku) {
         if (sku.hasOwnProperty(i)) {
@@ -233,8 +233,6 @@ function getActionTip(sku, num, img, name, isDown) {
     } else {
         tipDiv.innerHTML = '加入购物车成功!';
     }
-
-
 }
 
 
