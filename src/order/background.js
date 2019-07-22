@@ -31,6 +31,17 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    // 当新开标签页时，预加载蒙层
+    if (changeInfo.status == 'loading') {
+        chrome.tabs.query({}, function (tabs) {
+            tabs.forEach(function (item, index, arr) {
+                if (item.id === tabId) {
+                    chrome.tabs.sendMessage(tabId, {cmd: 'pre', value: 'showMask'});
+                }
+            });
+        })
+    }
+    // 当页面加载完时，才能操作dom
     if (changeInfo.status == 'complete') {
         console.log(tab, window.data);
         chrome.tabs.query({}, function (tabs) {
