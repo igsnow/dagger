@@ -42,7 +42,8 @@
   },
   "externally_connectable": {
     "matches": [
-      "*://localhost/*"
+      "*://localhost/*",
+      "*://test.wvcb.qilie.biz/*"
     ]
   }
 }
