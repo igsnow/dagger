@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             sendResponse('sku消息已收到！');
         }
 
-        getActionTip(skuObj, num, itemImg, itemName);
+        getActionTip(skuObj, num, itemImg, itemName, false);
 
         // 如果有SKU更多展开按钮，则点击
         let hasMore = $(".obj-expand");
@@ -121,11 +121,22 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         // 如果有头部sku,只有头部下标有值才能点击加入购物车
         if (hasFirstSku && first_index !== undefined && second_index !== undefined) {
             cart[0].click();
-            console.log('=>加入购物车成功!')
         } else if (second_index !== undefined) {
             cart[0].click();
-            console.log('=>加入购物车成功!')
         }
+
+        // sleep3秒钟，若出现提示框，则说明加入购物车成功
+        setTimeout(() => {
+            let successDialog = $('.purchase-dialog');
+            if (successDialog.length) {
+                if (successDialog.css("display") != 'none') {
+                    console.log('=>加入购物车成功!')
+                    getActionTip(skuObj, num, itemImg, itemName, true);
+                }
+            }
+        }, 3000)
+
+
     } else {
         console.log('不是1688页面!')
     }
@@ -143,7 +154,7 @@ function getSkuValByName(name, obj) {
     }
 }
 
-function getActionTip(sku, num, img, name) {
+function getActionTip(sku, num, img, name, isDown) {
     console.log(sku, num, img, name);
 
     let propsViewArr = [];
@@ -153,7 +164,6 @@ function getActionTip(sku, num, img, name) {
         }
     }
     let skuStr = propsViewArr.join('/');
-
 
     // 设置页面加载蒙层
     let bgDiv = document.createElement("div");
@@ -173,6 +183,8 @@ function getActionTip(sku, num, img, name) {
     infoDiv.style.borderRadius = '5px';
     infoDiv.style.width = "450px";
     infoDiv.style.height = "200px";
+    infoDiv.style.fontWeight = 'bold';
+    infoDiv.style.color = '#000000';
     infoDiv.style.position = "fixed";
     infoDiv.style.top = "150px";
     infoDiv.style.right = "120px";
@@ -195,8 +207,6 @@ function getActionTip(sku, num, img, name) {
     rightDiv.style.flex = '1';
     rightDiv.style.width = 'calc(100% - 80px)';
     rightDiv.style.fontSize = '15px';
-    rightDiv.style.fontWeight = 'bold';
-    rightDiv.style.color = '#000000';
     skuDiv.appendChild(rightDiv);
     let nameP = document.createElement("p");
     nameP.style.whiteSpace = 'nowrap';
@@ -209,10 +219,20 @@ function getActionTip(sku, num, img, name) {
     skuP.innerHTML = skuStr + '     ×' + num;
     rightDiv.appendChild(skuP);
 
+
     let tipDiv = document.createElement("div");
     tipDiv.style.textAlign = 'center';
-    tipDiv.innerHTML = '采购中......';
+    tipDiv.style.marginTop = '20px';
+    tipDiv.style.fontSize = '22px';
+
     infoDiv.appendChild(tipDiv);
+    // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
+    if (!isDown) {
+        tipDiv.innerHTML = '采购中......';
+    } else {
+        tipDiv.innerHTML = '加入购物车成功!';
+    }
+
 
 }
 
