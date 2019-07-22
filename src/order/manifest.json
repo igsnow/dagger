@@ -43,7 +43,9 @@
   "externally_connectable": {
     "matches": [
       "*://localhost/*",
-      "*://test.wvcb.qilie.biz/*"
+      "*://test.wvcb.qilie.biz/*",
+      "*://hk.vwork.vcanbuy.com/*",
+      "*://vwork.vcanbuy.com/*"
     ]
   }
 }
