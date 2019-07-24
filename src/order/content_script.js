@@ -12,12 +12,22 @@ let hasFirstSku = false;     // 是否有第一个sku标识
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.cmd == 'batch') {
         alert(request.value);
-        $('.fxkbtn').each(function (index, element) {
+        $('.fxkBtn').each(function (index, element) {
             if ($(this).css("display") != "none") {
                 $(this).click()
             }
         });
-        sendResponse('批量点击消息已收到！');
+        sendResponse('1688批量点击消息已收到！');
+    }
+
+    if (request.cmd == 'tBatch') {
+        alert(request.value);
+        $('.tbBtn').each(function (index, element) {
+            if ($(this).css("display") != "none") {
+                $(this).click()
+            }
+        });
+        sendResponse('淘宝批量点击消息已收到！');
     }
 
     if (location.host == 'detail.1688.com') {
