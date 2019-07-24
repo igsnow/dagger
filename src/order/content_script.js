@@ -40,9 +40,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
             // 过滤掉非采购1688页面
             if (request.value == null) return;
-            // 如果预加载蒙层没出现(有概率失败)，标签加载完成再加上蒙层
-            preMask();
-            getActionTip(skuObj, num, itemImg, itemName, false);
+            // 如果预加载蒙层没出现(有概率失败)，如果没有则标签加载完成再加上蒙层
+            let isMaskExit = document.getElementById('bgMask');
+            if (isMaskExit == null) {
+                preMask()
+            }
+            getActionTip(skuObj, num, itemImg, itemName);
 
             // 如果有SKU更多展开按钮，则点击
             let hasMore = $(".obj-expand");
@@ -89,7 +92,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 let secondSkuEle = $('.obj-sku .obj-title');
                 if (secondSkuEle && secondSkuEle[0]) {
                     let secondSkuName = secondSkuEle[0].innerHTML;
-                    let name = getSkuValByName(secondSkuName, skuObj)
+                    let name = getSkuValByName(secondSkuName, skuObj);
                     secondSku = skuObj[name];
                 }
                 let nList = $('.table-sku .name');
@@ -142,8 +145,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 let successDialog = $('.purchase-dialog');
                 if (successDialog.length) {
                     if (successDialog.css("display") != 'none') {
-                        console.log('=>加入购物车成功!')
-                        getActionTip(skuObj, num, itemImg, itemName, true);
+                        console.log('=>加入购物车成功!');
+                        let tipDiv = document.getElementById('cartTip');
+                        tipDiv.innerHTML = '加入购物车成功!';
                     }
                 }
             }, 1500)
@@ -168,6 +172,7 @@ function getSkuValByName(name, obj) {
 function preMask() {
     // 设置页面加载蒙层
     let bgDiv = document.createElement("div");
+    bgDiv.setAttribute("id", "bgMask");
     bgDiv.style.background = "rgba(0, 0, 0, .5)";
     bgDiv.style.position = "fixed";
     bgDiv.style.top = "0";
@@ -180,7 +185,7 @@ function preMask() {
 }
 
 // 弹出订单详情框
-function getActionTip(sku, num, img, name, isDown) {
+function getActionTip(sku, num, img, name) {
     let propsViewArr = [];
     for (let i in sku) {
         if (sku.hasOwnProperty(i)) {
@@ -232,16 +237,13 @@ function getActionTip(sku, num, img, name, isDown) {
     skuP.innerHTML = skuStr + '     ×' + num;
     rightDiv.appendChild(skuP);
     let tipDiv = document.createElement("div");
+    tipDiv.setAttribute("id", "cartTip");
     tipDiv.style.textAlign = 'center';
     tipDiv.style.marginTop = '20px';
     tipDiv.style.fontSize = '22px';
     infoDiv.appendChild(tipDiv);
     // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
-    if (!isDown) {
-        tipDiv.innerHTML = '采购中......';
-    } else {
-        tipDiv.innerHTML = '加入购物车成功!';
-    }
+    tipDiv.innerHTML = '采购中......';
 }
 
 
