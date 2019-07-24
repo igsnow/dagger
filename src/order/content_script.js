@@ -182,6 +182,28 @@ function preMask() {
     bgDiv.style.opacity = "0.8";
     bgDiv.style.zIndex = "2002";
     document.body.appendChild(bgDiv);
+    let closeBtn = document.createElement("div");
+    closeBtn.setAttribute("id", "cBtn");
+    closeBtn.style.border = "2px solid #E6A23C";
+    closeBtn.style.borderRadius = '50%';
+    closeBtn.style.width = "40px";
+    closeBtn.style.height = "40px";
+    closeBtn.style.textAlign = 'center';
+    closeBtn.style.lineHeight = '40px';
+    closeBtn.style.fontSize = '25px';
+    closeBtn.style.fontWeight = 'bold';
+    closeBtn.style.color = '#E6A23C';
+    closeBtn.style.position = "absolute";
+    closeBtn.style.top = "20px";
+    closeBtn.style.right = "110px";
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.innerHTML = '×';
+    bgDiv.appendChild(closeBtn);
+    let cBtn = document.getElementById("cBtn");
+    cBtn.onclick = function () {
+        let mask = document.getElementById("bgMask");
+        mask.style.display = 'none'
+    }
 }
 
 // 弹出订单详情框
