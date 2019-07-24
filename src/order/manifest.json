@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "自动下单",
+  "name": "Vcanbuy自动下单",
   "version": "0.1.0",
   "author": "zhangzhiyong@vcanbuy",
-  "description": "1688 auto order",
+  "description": "支持1688、淘宝、天猫",
   "icons": {
     "16": "sicon.png",
     "48": "sicon.png",
@@ -37,7 +37,7 @@
   ],
   "browser_action": {
     "default_icon": "sicon.png",
-    "default_title": "1688批量下单",
+    "default_title": "Vcanbuy自动下单",
     "default_popup": "popup.html"
   },
   "externally_connectable": {

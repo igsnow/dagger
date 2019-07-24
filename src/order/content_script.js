@@ -507,21 +507,22 @@ function getActionTip(sku, num, img, name) {
     infoDiv.appendChild(skuDiv);
     let imgE = document.createElement("img");
     imgE.style.display = 'inline-block';
-    imgE.style.width = '70px';
-    imgE.style.height = '70px';
+    imgE.style.width = '85px';
+    imgE.style.height = '85px';
     imgE.src = img;
     skuDiv.appendChild(imgE);
     let rightDiv = document.createElement("div");
     rightDiv.style.marginLeft = '10px';
     rightDiv.style.flex = '1';
-    rightDiv.style.width = 'calc(100% - 80px)';
+    rightDiv.style.width = 'calc(100% - 95px)';
     rightDiv.style.fontSize = '15px';
     skuDiv.appendChild(rightDiv);
     let nameP = document.createElement("p");
     nameP.style.whiteSpace = 'nowrap';
     nameP.style.overflow = 'hidden';
     nameP.style.textOverflow = 'ellipsis';
-    nameP.style.lineHeight = '40px';
+    nameP.style.lineHeight = '35px';
+    nameP.style.cursor = 'pointer';
     nameP.title = name;
     nameP.innerHTML = name;
     rightDiv.appendChild(nameP);
@@ -532,7 +533,7 @@ function getActionTip(sku, num, img, name) {
     tipDiv.setAttribute("id", "cartTip");
     tipDiv.style.textAlign = 'center';
     tipDiv.style.marginTop = '20px';
-    tipDiv.style.fontSize = '22px';
+    tipDiv.style.fontSize = '30px';
     infoDiv.appendChild(tipDiv);
     // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
     tipDiv.innerHTML = '采购中......';
