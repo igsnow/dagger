@@ -65,14 +65,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     firstSku = skuObj[name];
                 }
                 let aList = $('.list-leading a');
-                let arr = [];
+                // let arr = [];
                 for (let i = 0; i < aList.length; i++) {
-                    arr.push(aList[i].title);
+                    // arr.push(aList[i].title);
                     if (aList[i].title == firstSku) {
-                        first_index = i
+                        first_index = i;
+                        break
                     }
                 }
-                console.log({arr, first_index});
+                // console.log({arr, first_index});
                 // 拿到头部sku下标，开始点击
                 if (first_index !== undefined) {
                     if ($('.list-leading a') && $('.list-leading a')[first_index]) {
@@ -92,22 +93,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     secondSku = skuObj[name];
                 }
                 let nList = $('.table-sku .name');
-                let arr = [];
+                // let arr = [];
                 for (let i = 0; i < nList.length; i++) {
                     // 如果sku有图片，则sku取span标签的title值
                     if (nList[i].children[0].title) {
-                        arr.push(nList[i].children[0].title);
+                        // arr.push(nList[i].children[0].title);
                         if (nList[i].children[0].title == secondSku) {
-                            second_index = i
+                            second_index = i;
+                            break
                         }
                     } else {
-                        arr.push(nList[i].children[0].innerHTML);
+                        // arr.push(nList[i].children[0].innerHTML);
                         if (nList[i].children[0].innerHTML == secondSku) {
-                            second_index = i
+                            second_index = i;
+                            break
                         }
                     }
                 }
-                console.log({arr, second_index});
+                // console.log({arr, second_index});
                 if (second_index !== undefined) {
                     second_index += 1;
                     // (坑)自动填写商品数量，但是下方价格不改变，于是先自增一再减一，价格正确显示
