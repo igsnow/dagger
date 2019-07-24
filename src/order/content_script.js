@@ -532,7 +532,7 @@ function getActionTip(sku, num, img, name) {
     let tipDiv = document.createElement("div");
     tipDiv.setAttribute("id", "cartTip");
     tipDiv.style.textAlign = 'center';
-    tipDiv.style.marginTop = '20px';
+    tipDiv.style.marginTop = '15px';
     tipDiv.style.fontSize = '30px';
     infoDiv.appendChild(tipDiv);
     // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
