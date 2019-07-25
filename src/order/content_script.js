@@ -329,9 +329,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             for (let i = 0; i < skuName.length; i++) {
                 let name = getSkuValByName(skuName[i], skuObj);
                 let val = skuObj[name];
-                skuArr.push({[name]: val})
+                let index = 0;
+                let curUl = $('.J_TSaleProp[data-property="' + skuName[i] + '"]');
+                let curLiArr = curUl.find('li').find('span');
+                for (let j = 0; j < curLiArr.length; j++) {
+                    if (curLiArr[j].innerHTML == val) {
+                        index = j
+                    }
+                }
+                skuArr.push({[name]: val, index})
             }
             console.log(skuArr);
+
+            // 根据sku数组获取对应sku被点击的选项
+            let skuOptions = $('.J_TSaleProp');
+
 
             // 判断页面是否有如颜色等切换的SKU属性 即含有class为obj-leading的标签
             let hasObjLead = $('.obj-leading');
