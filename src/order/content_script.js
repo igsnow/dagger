@@ -317,15 +317,22 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             loadOnceMask();
             getActionTip(skuObj, num, itemImg, itemName);
 
-            // 如果有SKU更多展开按钮，则点击
-            let hasMore = $(".obj-expand");
-            if (hasMore && hasMore[0]) {
-                let isShow = hasMore[0].style.display;
-                if (!!isShow) {
-                    hasMore[0].click();
-                    console.log('=>展开更多sku列表...')
-                }
+
+            // TODO 匹配页面元素
+            // 获取页面商品sku属性数组
+            let skuEleArr = $('.tm-sale-prop');
+            let skuName = [];
+            for (let i = 0; i < skuEleArr.length; i++) {
+                skuName.push(skuEleArr[i].children[0].innerHTML)
             }
+            let skuArr = [];
+            for (let i = 0; i < skuName.length; i++) {
+                let name = getSkuValByName(skuName[i], skuObj);
+                let val = skuObj[name];
+                skuArr.push({[name]: val})
+            }
+            console.log(skuArr);
+
             // 判断页面是否有如颜色等切换的SKU属性 即含有class为obj-leading的标签
             let hasObjLead = $('.obj-leading');
             if (hasObjLead.length) {
