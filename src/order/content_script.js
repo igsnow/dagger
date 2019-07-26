@@ -279,16 +279,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             }
             console.log(skuArr);
 
-            // $('.J_TSaleProp[data-property="单果重量"] a') && $('.J_TSaleProp[data-property="单果重量"] a')[0] &&
-            // $('.J_TSaleProp[data-property="单果重量"] a')[0].click()
-            // for (let i = 0; i < skuArr.length; i++) {
-            //     let li = $('.J_TSaleProp[data-property="' + skuArr[i].skuName + '"] a');
-            //     console.log(li);
-            //     if (li && li[skuArr[i].index]) {
-            //         console.log(11);
-            //     }
-            // }
-
 
         }
     } else {
