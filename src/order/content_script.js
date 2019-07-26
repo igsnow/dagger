@@ -279,6 +279,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             }
             console.log(skuArr);
 
+            for (let i = 0; i < skuArr.length; i++) {
+                let aList = $('.J_TSaleProp[data-property="' + skuArr[i].skuName + '"] a');
+                // 如果sku的值只有一种选项，则页面默认选中，脚本不再点击
+                if (aList.length > 1) {
+                    if (aList && aList[skuArr[i].index]) {
+                        // aList[skuArr[i].index].click()
+                    }
+                }
+            }
+
 
         }
     } else {
