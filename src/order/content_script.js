@@ -36,6 +36,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             $(document).ready(function () {
                 loadOnceMask()
             })
+            sendResponse('蒙层已经预加载！');
         }
 
         if (request.cmd == 'sku') {
@@ -168,6 +169,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 // 预加载蒙层
                 loadOnceMask()
             })
+            sendResponse('蒙层已经预加载！');
         }
 
         if (request.cmd == 'sku') {
@@ -300,6 +302,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 // 预加载蒙层
                 loadOnceMask()
             })
+            sendResponse('蒙层已经预加载！');
         }
 
         if (request.cmd == 'sku') {
@@ -332,13 +335,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 let curLiArr = curUl.find('li').find('span');
                 for (let j = 0; j < curLiArr.length; j++) {
                     if (curLiArr[j].innerHTML == val) {
-                        index = j
+                        index = j;
                         break
                     }
                 }
-                skuArr.push({[name]: val, index})
+                skuArr.push({skuName: name, skuVal: val, index})
             }
             console.log(skuArr);
+
+            // $('.J_TSaleProp[data-property="单果重量"] a') && $('.J_TSaleProp[data-property="单果重量"] a')[0] &&
+            // $('.J_TSaleProp[data-property="单果重量"] a')[0].click()
+            // for (let i = 0; i < skuArr.length; i++) {
+            //     let li = $('.J_TSaleProp[data-property="' + skuArr[i].skuName + '"] a');
+            //     console.log(li);
+            //     if (li && li[skuArr[i].index]) {
+            //         console.log(11);
+            //     }
+            // }
+
 
         }
     } else {
@@ -468,7 +482,7 @@ function loadOnceMask() {
 
 // 将http协议转为https协议,否则插件会报不安全错误
 function changeProtocol(val) {
-    if (val.indexOf('https' < 0)) {
+    if (val.indexOf('https') < 0) {
         val = val.replace("http", "https");
         return val
     }

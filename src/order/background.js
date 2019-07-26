@@ -31,9 +31,18 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    // 当平台是天猫时,选择sku属性时，url会改变，就会无限触发update方法，因此对根url进行判断，是否属于同一页面，如果是,则不再触发此方法
+    let url = tab.url;
+    let firstSeg = url.indexOf('&');
+    let rootUrl = url.substring(0, firstSeg);
+    // console.log(rootUrl);
+    // console.log(url);
+    console.log(changeInfo.url === url);
+
+
     // 当新开标签页时，预加载蒙层
     if (changeInfo.status == 'loading') {
-        chrome.tabs.query({}, function (tabs) {
+        chrome.tabs.query({pinned: true}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
                 if (item.id === tabId) {
                     chrome.tabs.sendMessage(tabId, {cmd: 'pre', value: 'showMask'});
@@ -43,8 +52,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     }
     // 当页面加载完时，才能操作dom
     if (changeInfo.status == 'complete') {
-        console.log(tab, window.data);
-        chrome.tabs.query({}, function (tabs) {
+        // console.log(tab, window.data);
+        chrome.tabs.query({pinned: true}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
                 if (item.id === tabId) {
                     chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: getCurTabMsg(window.data, tabId)});
