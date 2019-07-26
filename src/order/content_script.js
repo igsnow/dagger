@@ -367,7 +367,7 @@ function getActionTip(sku, num, img, name) {
     infoDiv.style.position = "fixed";
     infoDiv.style.top = "100px";
     infoDiv.style.right = "110px";
-    infoDiv.style.opacity = "0.8";
+    infoDiv.style.opacity = "0.95";
     infoDiv.style.zIndex = "9999999999";
     infoDiv.style.cursor = 'pointer';
     document.body.appendChild(infoDiv);
@@ -444,16 +444,17 @@ function dragMove() {
         let distanceY = e.pageY - positionDiv.top;
         $(document).mousemove(function (e) {
             let x = e.pageX - distanceX;
-            let y = e.pageY - distanceY;
+            // 减去页面向上滚动的距离，否则拖拽会出现向下塌陷
+            let y = e.pageY - distanceY - document.documentElement.scrollTop;
             if (x < 0) {
                 x = 0;
-            } else if (x > document.documentElement.clientWidth - $('#infoPopupBox').outerWidth(true)) {
-                x = document.documentElement.clientWidth - $('#infoPopupBox').outerWidth(true);
+            } else if (x > $(window).width() - $('#infoPopupBox').outerWidth(true)) {
+                x = $(window).width() - $('#infoPopupBox').outerWidth(true);
             }
             if (y < 0) {
                 y = 0;
-            } else if (y > document.documentElement.clientHeight - $('#infoPopupBox').outerHeight(true)) {
-                y = document.documentElement.clientHeight - $('#infoPopupBox').outerHeight(true);
+            } else if (y > $(window).height() - $('#infoPopupBox').outerHeight(true)) {
+                y = $(window).height() - $('#infoPopupBox').outerHeight(true);
             }
             $('#infoPopupBox').css({
                 'left': x + 'px',
