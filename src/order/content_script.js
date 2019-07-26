@@ -294,6 +294,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else {
         console.log('不是天猫页面!')
     }
+
+    if (location.host == 'cart.1688.com') {
+        if (request.cmd == 'all') {
+            console.log(request.value);
+            sendResponse('淘宝批量点击消息已收到！');
+        }
+    } else {
+        console.log('不是1688结算页!')
+    }
+
 });
 
 // 给sku属性名做兼容，比如页面元素是返回尺码（双），带个单位，但接口返回'尺码'，做个兼容
@@ -466,6 +476,7 @@ function dragMove() {
         });
     });
 }
+
 
 
 

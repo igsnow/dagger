@@ -22,6 +22,7 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
         // 给新建的tab绑定一个id，便于后面更新页面时发送消息
         request.msg.id = tab.id;
         window.data.push(request.msg);
+        console.log(window.data);
     });
 
     // 可以针对sender做一些白名单检查
@@ -35,8 +36,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     let url = tab.url;
     let firstSeg = url.indexOf('&');
     let rootUrl = url.substring(0, firstSeg);
-    // console.log(changeInfo.url, url)
-    // console.log(changeInfo.url == url);
 
 
     // 当新开标签页时，预加载蒙层
@@ -44,21 +43,23 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
                 if (item.id === tabId) {
-                    chrome.tabs.sendMessage(tabId, {cmd: 'pre', value: 'showMask'});
+                    // chrome.tabs.sendMessage(tabId, {cmd: 'pre', value: 'showMask'});
                 }
             });
         })
     }
     // 当页面加载完时，才能操作dom
     if (changeInfo.status == 'complete') {
-        console.log(2);
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
                 if (item.id === tabId) {
                     chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: getCurTabMsg(window.data, tabId)});
+                    // 给1688结算页发送订单所有详情信息
+                    chrome.tabs.sendMessage(tabId, {cmd: 'all', value: window.data});
                 }
             });
         })
+
     }
 });
 
