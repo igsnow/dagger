@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             if (request.value == null) return;
             $(document).ready(function () {
                 loadOnceMask()
-            })
+            });
             sendResponse('蒙层已经预加载！');
         }
 
@@ -168,7 +168,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             $(document).ready(function () {
                 // 预加载蒙层
                 loadOnceMask()
-            })
+            });
             sendResponse('蒙层已经预加载！');
         }
 
@@ -301,7 +301,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             $(document).ready(function () {
                 // 预加载蒙层
                 loadOnceMask()
-            })
+            });
             sendResponse('蒙层已经预加载！');
         }
 
