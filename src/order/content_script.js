@@ -52,7 +52,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             if (request.value == null) return;
             // 如果预加载蒙层没出现(有概率失败)，如果没有则标签加载完成再加上蒙层
             loadOnceMask();
-            getActionTip(skuObj, num, itemImg, itemName);
+            loadOncePopup(skuObj, num, itemImg, itemName);
 
             // 如果有SKU更多展开按钮，则点击
             let hasMore = $(".obj-expand");
@@ -185,7 +185,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             if (request.value == null) return;
             // 如果预加载蒙层没出现(有概率失败)，如果没有则标签加载完成再加上蒙层
             loadOnceMask();
-            getActionTip(skuObj, num, itemImg, itemName);
+            loadOncePopup(skuObj, num, itemImg, itemName);
 
             // 获取淘宝页面商品sku属性数组以及每个sku属性被点击的下标
             let skuEleArr = $('.J_Prop');
@@ -254,7 +254,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             if (request.value == null) return;
             // 如果预加载蒙层没出现(有概率失败)，如果没有则标签加载完成再加上蒙层
             loadOnceMask();
-            getActionTip(skuObj, num, itemImg, itemName);
+            loadOncePopup(skuObj, num, itemImg, itemName);
 
             // 获取页面商品sku属性数组以及每个sku属性被点击的下标
             let skuEleArr = $('.tm-sale-prop');
@@ -356,6 +356,7 @@ function getActionTip(sku, num, img, name) {
     let skuStr = propsViewArr.join('/');
     // 订单详情提示框
     let infoDiv = document.createElement("div");
+    infoDiv.setAttribute("id", "infoPopupBox");
     infoDiv.style.background = "#E6A23C";
     infoDiv.style.border = "1px solid #E6A23C";
     infoDiv.style.borderRadius = '5px';
@@ -364,8 +365,8 @@ function getActionTip(sku, num, img, name) {
     infoDiv.style.fontWeight = 'bold';
     infoDiv.style.color = '#000000';
     infoDiv.style.position = "fixed";
-    infoDiv.style.top = "150px";
-    infoDiv.style.right = "120px";
+    infoDiv.style.top = "100px";
+    infoDiv.style.right = "110px";
     infoDiv.style.opacity = "0.8";
     infoDiv.style.zIndex = "9999999999";
     document.body.appendChild(infoDiv);
@@ -413,6 +414,14 @@ function loadOnceMask() {
     let isMaskExit = document.getElementById('bgMask');
     if (isMaskExit == null) {
         preMask()
+    }
+}
+
+// sku弹框只加载一次
+function loadOncePopup(sku, num, img, name) {
+    let isPopupExit = document.getElementById('infoPopupBox');
+    if (isPopupExit == null) {
+        getActionTip(sku, num, img, name)
     }
 }
 
