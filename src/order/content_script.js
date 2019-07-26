@@ -369,6 +369,7 @@ function getActionTip(sku, num, img, name) {
     infoDiv.style.right = "110px";
     infoDiv.style.opacity = "0.8";
     infoDiv.style.zIndex = "9999999999";
+    infoDiv.style.cursor = 'pointer';
     document.body.appendChild(infoDiv);
     // 采购单sku详情
     let skuDiv = document.createElement("div");
@@ -407,6 +408,7 @@ function getActionTip(sku, num, img, name) {
     infoDiv.appendChild(tipDiv);
     // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
     tipDiv.innerHTML = '采购中......';
+    dragMove()
 }
 
 // 蒙层只加载一次
@@ -433,6 +435,38 @@ function changeProtocol(val) {
     }
     return val;
 }
+
+// 可拖拽详情框
+function dragMove() {
+    $('#infoPopupBox').mousedown(function (e) {
+        let positionDiv = $(this).offset();
+        let distanceX = e.pageX - positionDiv.left;
+        let distanceY = e.pageY - positionDiv.top;
+        $(document).mousemove(function (e) {
+            let x = e.pageX - distanceX;
+            let y = e.pageY - distanceY;
+            if (x < 0) {
+                x = 0;
+            } else if (x > document.documentElement.clientWidth - $('#infoPopupBox').outerWidth(true)) {
+                x = document.documentElement.clientWidth - $('#infoPopupBox').outerWidth(true);
+            }
+            if (y < 0) {
+                y = 0;
+            } else if (y > document.documentElement.clientHeight - $('#infoPopupBox').outerHeight(true)) {
+                y = document.documentElement.clientHeight - $('#infoPopupBox').outerHeight(true);
+            }
+            $('#infoPopupBox').css({
+                'left': x + 'px',
+                'top': y + 'px'
+            });
+        });
+        $(document).mouseup(function () {
+            $(document).off('mousemove');
+        });
+    });
+}
+
+
 
 
 
