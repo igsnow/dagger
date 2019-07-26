@@ -219,7 +219,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 }
             }
 
-
+            // 修改商品数量
+            let ipt = $('#J_IptAmount');
+            if (ipt && ipt[0]) {
+                ipt[0].value = num;
+            }
+            // 点击加入购物车按钮
+            let cart = $('.J_LinkAdd');
+            cart && cart[0] && cart[0].click();
         }
     } else {
         console.log('不是淘宝页面!')
