@@ -187,110 +187,39 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             loadOnceMask();
             getActionTip(skuObj, num, itemImg, itemName);
 
-            // 如果有SKU更多展开按钮，则点击
-            let hasMore = $(".obj-expand");
-            if (hasMore && hasMore[0]) {
-                let isShow = hasMore[0].style.display;
-                if (!!isShow) {
-                    hasMore[0].click();
-                    console.log('=>展开更多sku列表...')
-                }
+            // 获取淘宝页面商品sku属性数组以及每个sku属性被点击的下标
+            let skuEleArr = $('.J_Prop');
+            let skuName = [];
+            for (let i = 0; i < skuEleArr.length; i++) {
+                skuName.push(skuEleArr[i].children[0].innerHTML)
             }
-            // 判断页面是否有如颜色等切换的SKU属性 即含有class为obj-leading的标签
-            let hasObjLead = $('.obj-leading');
-            if (hasObjLead.length) {
-                hasFirstSku = true;
-                // 匹配页面的第一个sku属性名称
-                let firstSkuEle = $('.obj-leading .obj-title');
-                if (firstSkuEle && firstSkuEle[0]) {
-                    let firstSkuName = firstSkuEle[0].innerHTML;
-                    let name = getSkuValByName(firstSkuName, skuObj);
-                    firstSku = skuObj[name];
-                }
-                let aList = $('.list-leading a');
-                // let arr = [];
-                for (let i = 0; i < aList.length; i++) {
-                    // arr.push(aList[i].title);
-                    if (aList[i].title == firstSku) {
-                        first_index = i;
+            let skuArr = [];
+            for (let i = 0; i < skuName.length; i++) {
+                let name = getSkuValByName(skuName[i], skuObj);
+                let val = skuObj[name];
+                let index = 0;
+                let curUl = $('.J_TSaleProp[data-property="' + skuName[i] + '"]');
+                let curLiArr = curUl.find('li').find('span');
+                for (let j = 0; j < curLiArr.length; j++) {
+                    if (curLiArr[j].innerHTML == val) {
+                        index = j;
                         break
                     }
                 }
-                // console.log({arr, first_index});
-                // 拿到头部sku下标，开始点击
-                if (first_index !== undefined) {
-                    if ($('.list-leading a') && $('.list-leading a')[first_index]) {
-                        $('.list-leading a')[first_index].click();
-                        console.log('=>头部sku已选!')
+                skuArr.push({skuName: name, skuVal: val, index})
+            }
+            console.log(skuArr);
+            for (let i = 0; i < skuArr.length; i++) {
+                let aList = $('.J_TSaleProp[data-property="' + skuArr[i].skuName + '"] a');
+                // 如果sku的值只有一种选项，则页面默认选中，脚本不再点击
+                if (aList.length > 1) {
+                    if (aList && aList[skuArr[i].index]) {
+                        aList[skuArr[i].index].click()
                     }
                 }
             }
-            // 是否有数量选择sku
-            let hasObjSku = $('.obj-sku');
-            if (hasObjSku.length) {
-                // 匹配页面的第二个sku属性名称
-                let secondSkuEle = $('.obj-sku .obj-title');
-                if (secondSkuEle && secondSkuEle[0]) {
-                    let secondSkuName = secondSkuEle[0].innerHTML;
-                    let name = getSkuValByName(secondSkuName, skuObj);
-                    secondSku = skuObj[name];
-                }
-                let nList = $('.table-sku .name');
-                // let arr = [];
-                for (let i = 0; i < nList.length; i++) {
-                    // 如果sku有图片，则sku取span标签的title值
-                    if (nList[i].children[0].title) {
-                        // arr.push(nList[i].children[0].title);
-                        if (nList[i].children[0].title == secondSku) {
-                            second_index = i;
-                            break
-                        }
-                    } else {
-                        // arr.push(nList[i].children[0].innerHTML);
-                        if (nList[i].children[0].innerHTML == secondSku) {
-                            second_index = i;
-                            break
-                        }
-                    }
-                }
-                // console.log({arr, second_index});
-                if (second_index !== undefined) {
-                    second_index += 1;
-                    // (坑)自动填写商品数量，但是下方价格不改变，于是先自增一再减一，价格正确显示
-                    let ipt = $('.table-sku tr:nth-child(' + second_index + ') .amount-input');
-                    let up = $('.table-sku tr:nth-child(' + second_index + ') .amount-up');
-                    let down = $('.table-sku tr:nth-child(' + second_index + ') .amount-down');
-                    if (ipt && ipt[0]) {
-                        ipt[0].value = num;
-                    }
-                    if (up && up[0]) {
-                        up[0].click()
-                    }
-                    if (down && down[0]) {
-                        down[0].click()
-                    }
-                    console.log('=>数量已自动填充完成!');
-                }
-            }
-            // 点击加入购物车按钮
-            let cart = $('.do-cart');
-            // 如果有头部sku,只有头部下标有值才能点击加入购物车
-            if (hasFirstSku && first_index !== undefined && second_index !== undefined) {
-                cart[0].click();
-            } else if (second_index !== undefined) {
-                cart[0].click();
-            }
-            // sleep3秒钟，若出现提示框，则说明加入购物车成功
-            setTimeout(() => {
-                let successDialog = $('.purchase-dialog');
-                if (successDialog.length) {
-                    if (successDialog.css("display") != 'none') {
-                        console.log('=>加入购物车成功!');
-                        let tipDiv = document.getElementById('cartTip');
-                        tipDiv.innerHTML = '加入购物车成功!';
-                    }
-                }
-            }, 1500)
+
+
         }
     } else {
         console.log('不是淘宝页面!')

@@ -55,7 +55,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
                 if (item.id === tabId) {
-                    // chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: getCurTabMsg(window.data, tabId)});
+                    chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: getCurTabMsg(window.data, tabId)});
                 }
             });
         })
