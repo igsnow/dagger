@@ -296,9 +296,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 
     if (location.host == 'cart.1688.com') {
+        if (request.cmd == 'pre') {
+            if (request.value == null) return;
+            $(document).ready(function () {
+                // 预加载蒙层
+                loadOnceMask()
+            });
+            sendResponse('蒙层已经预加载！');
+        }
         if (request.cmd == 'all') {
             console.log(request.value);
             sendResponse('淘宝批量点击消息已收到！');
+            // 过滤掉非采购1688页面
+            if (request.value == null) return;
+            loadOnceMask();
+            loadOnceSettlePopup(skuObj, num, itemImg, itemName);
         }
     } else {
         console.log('不是1688结算页!')
@@ -421,22 +433,6 @@ function getActionTip(sku, num, img, name) {
     dragMove()
 }
 
-// 蒙层只加载一次
-function loadOnceMask() {
-    let isMaskExit = document.getElementById('bgMask');
-    if (isMaskExit == null) {
-        preMask()
-    }
-}
-
-// sku弹框只加载一次
-function loadOncePopup(sku, num, img, name) {
-    let isPopupExit = document.getElementById('infoPopupBox');
-    if (isPopupExit == null) {
-        getActionTip(sku, num, img, name)
-    }
-}
-
 // 弹出结算页汇总详情框
 function getSettlePopup(sku, num, img, name) {
     let propsViewArr = [];
@@ -501,6 +497,30 @@ function getSettlePopup(sku, num, img, name) {
     // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
     tipDiv.innerHTML = '采购中......';
     dragMove()
+}
+
+// 蒙层只加载一次
+function loadOnceMask() {
+    let isMaskExit = document.getElementById('bgMask');
+    if (isMaskExit == null) {
+        preMask()
+    }
+}
+
+// sku弹框只加载一次
+function loadOncePopup(sku, num, img, name) {
+    let isPopupExit = document.getElementById('infoPopupBox');
+    if (isPopupExit == null) {
+        getActionTip(sku, num, img, name)
+    }
+}
+
+// 结算页弹框只加载一次
+function loadOnceSettlePopup(sku, num, img, name) {
+    let isPopupExit = document.getElementById('infoPopupBox');
+    if (isPopupExit == null) {
+        getSettlePopup(sku, num, img, name)
+    }
 }
 
 // 将http协议转为https协议,否则插件会报不安全错误
