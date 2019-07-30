@@ -437,6 +437,72 @@ function loadOncePopup(sku, num, img, name) {
     }
 }
 
+// 弹出结算页汇总详情框
+function getSettlePopup(sku, num, img, name) {
+    let propsViewArr = [];
+    for (let i in sku) {
+        if (sku.hasOwnProperty(i)) {
+            propsViewArr.push(sku[i])
+        }
+    }
+    let skuStr = propsViewArr.join('/');
+    // 订单详情提示框
+    let infoDiv = document.createElement("div");
+    infoDiv.setAttribute("id", "infoPopupBox");
+    infoDiv.style.background = "#E6A23C";
+    infoDiv.style.border = "1px solid #E6A23C";
+    infoDiv.style.borderRadius = '5px';
+    infoDiv.style.width = "450px";
+    infoDiv.style.height = "200px";
+    infoDiv.style.fontWeight = 'bold';
+    infoDiv.style.color = '#000000';
+    infoDiv.style.position = "fixed";
+    infoDiv.style.top = "100px";
+    infoDiv.style.right = "110px";
+    infoDiv.style.opacity = "0.95";
+    infoDiv.style.zIndex = "9999999999";
+    infoDiv.style.cursor = 'pointer';
+    document.body.appendChild(infoDiv);
+    // 采购单sku详情
+    let skuDiv = document.createElement("div");
+    skuDiv.style.display = 'flex';
+    skuDiv.style.margin = '8px';
+    infoDiv.appendChild(skuDiv);
+    let imgE = document.createElement("img");
+    imgE.style.display = 'inline-block';
+    imgE.style.width = '85px';
+    imgE.style.height = '85px';
+    imgE.src = changeProtocol(img);
+    skuDiv.appendChild(imgE);
+    let rightDiv = document.createElement("div");
+    rightDiv.style.marginLeft = '10px';
+    rightDiv.style.flex = '1';
+    rightDiv.style.width = 'calc(100% - 95px)';
+    rightDiv.style.fontSize = '15px';
+    skuDiv.appendChild(rightDiv);
+    let nameP = document.createElement("p");
+    nameP.style.whiteSpace = 'nowrap';
+    nameP.style.overflow = 'hidden';
+    nameP.style.textOverflow = 'ellipsis';
+    nameP.style.lineHeight = '35px';
+    nameP.style.cursor = 'pointer';
+    nameP.title = name;
+    nameP.innerHTML = name;
+    rightDiv.appendChild(nameP);
+    let skuP = document.createElement("p");
+    skuP.innerHTML = skuStr + '     ×' + num;
+    rightDiv.appendChild(skuP);
+    let tipDiv = document.createElement("div");
+    tipDiv.setAttribute("id", "cartTip");
+    tipDiv.style.textAlign = 'center';
+    tipDiv.style.marginTop = '15px';
+    tipDiv.style.fontSize = '30px';
+    infoDiv.appendChild(tipDiv);
+    // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
+    tipDiv.innerHTML = '采购中......';
+    dragMove()
+}
+
 // 将http协议转为https协议,否则插件会报不安全错误
 function changeProtocol(val) {
     if (val.indexOf('https') < 0) {
