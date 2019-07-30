@@ -160,7 +160,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             }, 1500)
         }
     } else {
-        console.log('不是1688页面!')
     }
     if (location.host == 'item.taobao.com') {
         if (request.cmd == 'pre') {
@@ -229,7 +228,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             cart && cart[0] && cart[0].click();
         }
     } else {
-        console.log('不是淘宝页面!')
     }
     if (location.host == 'detail.tmall.com') {
         if (request.cmd == 'pre') {
@@ -307,7 +305,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             }, 1500)
         }
     } else {
-        console.log('不是天猫页面!')
     }
     if (location.host == 'cart.1688.com' || location.host == 'buy.taobao.com' || location.host + location.pathname == 'cart.taobao.com/cart.htm') {
         if (request.cmd == 'pre') {
@@ -326,7 +323,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             loadOnceSettlePopup(request.value);
         }
     } else {
-        console.log('不是购物车结算页!')
     }
     if (location.host + location.pathname == 'cart.taobao.com/add_cart_succeed.htm') {
         if (request.cmd == 'pre') {
@@ -354,7 +350,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             tipDiv.innerHTML = '加入购物车成功!';
         }
     } else {
-        console.log('不是淘宝加入购物车成功页!')
     }
 });
 
