@@ -287,7 +287,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     }
                 }
             }
-
+            // 修改商品数量
+            let ipt = $('.mui-amount-input');
+            if (ipt && ipt[0]) {
+                ipt[0].value = num;
+            }
+            // 点击加入购物车按钮
+            let cart = $('#J_LinkBasket');
+            cart && cart[0] && cart[0].click();
+            // sleep1500ms，若出现提示框，则说明加入购物车成功
+            setTimeout(() => {
+                let tipDiv = document.getElementById('cartTip');
+                tipDiv.innerHTML = '加入购物车成功!';
+            }, 1500)
 
         }
     } else {
