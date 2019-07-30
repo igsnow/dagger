@@ -328,6 +328,34 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else {
         console.log('不是1688结算页!')
     }
+    if (location.pathname == '/add_cart_succeed.htm') {
+        if (request.cmd == 'pre') {
+            if (request.value == null) return;
+            $(document).ready(function () {
+                // 预加载蒙层
+                loadOnceMask()
+            });
+            sendResponse('蒙层已经预加载！');
+        }
+
+        if (request.cmd == 'sku') {
+            console.log(request.value);
+            let res = request.value;
+            skuObj = res && res.skuProps && JSON.parse(res.skuProps);
+            num = res && res.skuNum;
+            itemImg = res && res.img;
+            itemName = res && res.name;
+            sendResponse('sku消息已收到！');
+            if (request.value == null) return;
+            // 如果预加载蒙层没出现(有概率失败)，如果没有则标签加载完成再加上蒙层
+            loadOnceMask();
+            loadOncePopup(skuObj, num, itemImg, itemName);
+            let tipDiv = document.getElementById('cartTip');
+            tipDiv.innerHTML = '加入购物车成功!';
+        }
+    } else {
+        console.log('不是淘宝加入购物车成功页!')
+    }
 });
 
 // 给sku属性名做兼容，比如页面元素是返回尺码（双），带个单位，但接口返回'尺码'，做个兼容
