@@ -287,10 +287,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     }
                 }
             }
-            // 修改商品数量
+            // 修改商品数量,直接修改商品数量无效，先加一再减一
             let ipt = $('.mui-amount-input');
-            if (ipt && ipt[0]) {
-                ipt[0].value = num;
+            let up = $('.mui-amount-increase');
+            let down = $('.mui-amount-decrease');
+            // 如果num是1，则不点击+号（此处直接修改num值不生效）
+            if (num > 1) {
+                for (let i = 0; i < num - 1; i++) {
+                    up && up[0] && up[0].click()
+                }
             }
             // 点击加入购物车按钮
             let cart = $('#J_LinkBasket');
@@ -300,7 +305,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 let tipDiv = document.getElementById('cartTip');
                 tipDiv.innerHTML = '加入购物车成功!';
             }, 1500)
-
         }
     } else {
         console.log('不是天猫页面!')
@@ -545,7 +549,8 @@ function changeProtocol(val) {
 // 兼容XXL(2尺3)等sku属性
 function parseSku(val) {
     let leftBracket = val.indexOf('(');
-    if (leftBracket > 0) {
+    let inch = val.indexOf('尺');
+    if (leftBracket > 0 && inch > 0) {
         val = val.substring(0, leftBracket).trim();
     }
     return val
@@ -581,8 +586,6 @@ function dragMove() {
         });
     });
 }
-
-
 
 
 
