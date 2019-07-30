@@ -443,8 +443,8 @@ function getSettlePopup(val) {
     infoDiv.style.fontWeight = 'bold';
     infoDiv.style.color = '#000000';
     infoDiv.style.position = "fixed";
-    infoDiv.style.top = "100px";
-    infoDiv.style.right = "110px";
+    infoDiv.style.top = "90px";
+    infoDiv.style.left = "20px";
     infoDiv.style.opacity = "0.95";
     infoDiv.style.zIndex = "9999999999";
     infoDiv.style.cursor = 'pointer';
