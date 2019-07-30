@@ -309,7 +309,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else {
         console.log('不是天猫页面!')
     }
-    if (location.host == 'cart.1688.com') {
+    if (location.host == 'cart.1688.com' || location.host == 'buy.taobao.com' || location.host + location.pathname == 'cart.taobao.com/cart.htm') {
         if (request.cmd == 'pre') {
             if (request.value == null) return;
             $(document).ready(function () {
@@ -326,9 +326,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             loadOnceSettlePopup(request.value);
         }
     } else {
-        console.log('不是1688结算页!')
+        console.log('不是购物车结算页!')
     }
-    if (location.pathname == '/add_cart_succeed.htm') {
+    if (location.host + location.pathname == 'cart.taobao.com/add_cart_succeed.htm') {
         if (request.cmd == 'pre') {
             if (request.value == null) return;
             $(document).ready(function () {
@@ -380,7 +380,7 @@ function preMask() {
     bgDiv.style.left = "0";
     bgDiv.style.right = "0";
     bgDiv.style.bottom = "0";
-    bgDiv.style.opacity = "0.8";
+    bgDiv.style.opacity = "0.5";
     bgDiv.style.zIndex = "999999999";
     document.body.appendChild(bgDiv);
     let closeBtn = document.createElement("div");
@@ -509,6 +509,7 @@ function getSettlePopup(val) {
         let skuDiv = document.createElement("div");
         skuDiv.style.display = 'flex';
         skuDiv.style.margin = '8px';
+        skuDiv.style.borderBottom = '1px dashed #fff';
         infoDiv.appendChild(skuDiv);
         let imgE = document.createElement("img");
         imgE.style.display = 'inline-block';
