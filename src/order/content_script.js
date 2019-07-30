@@ -305,12 +305,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             sendResponse('蒙层已经预加载！');
         }
         if (request.cmd == 'all') {
-            console.log(request.value);
             sendResponse('淘宝批量点击消息已收到！');
             // 过滤掉非采购1688页面
             if (request.value == null) return;
             loadOnceMask();
-            loadOnceSettlePopup(skuObj, num, itemImg, itemName);
+            loadOnceSettlePopup(request.value);
         }
     } else {
         console.log('不是1688结算页!')
@@ -434,22 +433,13 @@ function getActionTip(sku, num, img, name) {
 }
 
 // 弹出结算页汇总详情框
-function getSettlePopup(sku, num, img, name) {
-    let propsViewArr = [];
-    for (let i in sku) {
-        if (sku.hasOwnProperty(i)) {
-            propsViewArr.push(sku[i])
-        }
-    }
-    let skuStr = propsViewArr.join('/');
-    // 订单详情提示框
+function getSettlePopup(val) {
     let infoDiv = document.createElement("div");
     infoDiv.setAttribute("id", "infoPopupBox");
     infoDiv.style.background = "#E6A23C";
     infoDiv.style.border = "1px solid #E6A23C";
     infoDiv.style.borderRadius = '5px';
     infoDiv.style.width = "450px";
-    infoDiv.style.height = "200px";
     infoDiv.style.fontWeight = 'bold';
     infoDiv.style.color = '#000000';
     infoDiv.style.position = "fixed";
@@ -459,43 +449,53 @@ function getSettlePopup(sku, num, img, name) {
     infoDiv.style.zIndex = "9999999999";
     infoDiv.style.cursor = 'pointer';
     document.body.appendChild(infoDiv);
-    // 采购单sku详情
-    let skuDiv = document.createElement("div");
-    skuDiv.style.display = 'flex';
-    skuDiv.style.margin = '8px';
-    infoDiv.appendChild(skuDiv);
-    let imgE = document.createElement("img");
-    imgE.style.display = 'inline-block';
-    imgE.style.width = '85px';
-    imgE.style.height = '85px';
-    imgE.src = changeProtocol(img);
-    skuDiv.appendChild(imgE);
-    let rightDiv = document.createElement("div");
-    rightDiv.style.marginLeft = '10px';
-    rightDiv.style.flex = '1';
-    rightDiv.style.width = 'calc(100% - 95px)';
-    rightDiv.style.fontSize = '15px';
-    skuDiv.appendChild(rightDiv);
-    let nameP = document.createElement("p");
-    nameP.style.whiteSpace = 'nowrap';
-    nameP.style.overflow = 'hidden';
-    nameP.style.textOverflow = 'ellipsis';
-    nameP.style.lineHeight = '35px';
-    nameP.style.cursor = 'pointer';
-    nameP.title = name;
-    nameP.innerHTML = name;
-    rightDiv.appendChild(nameP);
-    let skuP = document.createElement("p");
-    skuP.innerHTML = skuStr + '     ×' + num;
-    rightDiv.appendChild(skuP);
-    let tipDiv = document.createElement("div");
-    tipDiv.setAttribute("id", "cartTip");
-    tipDiv.style.textAlign = 'center';
-    tipDiv.style.marginTop = '15px';
-    tipDiv.style.fontSize = '30px';
-    infoDiv.appendChild(tipDiv);
-    // 如果开始采购，则弹框信息显示加载中，否则显示加入购物车成功
-    tipDiv.innerHTML = '采购中......';
+    for (let i = 0; i < val.length; i++) {
+        console.log(val[i]);
+        let item = val[i];
+        let sku = item && item.skuProps && JSON.parse(item.skuProps);
+        let num = item && item.skuNum;
+        let img = item && item.img;
+        let name = item && item.name;
+        let price = item && item.price;
+        let propsViewArr = [];
+        for (let i in sku) {
+            if (sku.hasOwnProperty(i)) {
+                propsViewArr.push(sku[i])
+            }
+        }
+        let skuStr = propsViewArr.join('/');
+        let skuDiv = document.createElement("div");
+        skuDiv.style.display = 'flex';
+        skuDiv.style.margin = '8px';
+        infoDiv.appendChild(skuDiv);
+        let imgE = document.createElement("img");
+        imgE.style.display = 'inline-block';
+        imgE.style.width = '70px';
+        imgE.style.height = '70px';
+        imgE.src = changeProtocol(img);
+        skuDiv.appendChild(imgE);
+        let rightDiv = document.createElement("div");
+        rightDiv.style.marginLeft = '10px';
+        rightDiv.style.flex = '1';
+        rightDiv.style.width = 'calc(100% - 80px)';
+        rightDiv.style.fontSize = '14px';
+        skuDiv.appendChild(rightDiv);
+        let nameP = document.createElement("p");
+        nameP.style.whiteSpace = 'nowrap';
+        nameP.style.overflow = 'hidden';
+        nameP.style.textOverflow = 'ellipsis';
+        nameP.style.lineHeight = '25px';
+        nameP.style.cursor = 'pointer';
+        nameP.title = name;
+        nameP.innerHTML = name;
+        rightDiv.appendChild(nameP);
+        let skuP = document.createElement("p");
+        skuP.innerHTML = skuStr + '     ×' + num;
+        rightDiv.appendChild(skuP);
+        let priceP = document.createElement("p");
+        priceP.innerHTML = price + ' RMB';
+        rightDiv.appendChild(priceP);
+    }
     dragMove()
 }
 
@@ -516,10 +516,10 @@ function loadOncePopup(sku, num, img, name) {
 }
 
 // 结算页弹框只加载一次
-function loadOnceSettlePopup(sku, num, img, name) {
+function loadOnceSettlePopup(val) {
     let isPopupExit = document.getElementById('infoPopupBox');
     if (isPopupExit == null) {
-        getSettlePopup(sku, num, img, name)
+        getSettlePopup(val)
     }
 }
 
