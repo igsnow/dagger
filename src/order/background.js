@@ -60,7 +60,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 }
             });
         })
-
     }
 });
 
@@ -72,6 +71,13 @@ function getCurTabMsg(data, id) {
         }
     }
 }
+
+// 清空data
+function clearData() {
+    window.data = []
+}
+
+
 
 
 
