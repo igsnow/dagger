@@ -270,7 +270,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 let curUl = $('.J_TSaleProp[data-property="' + skuName[i] + '"]');
                 let curLiArr = curUl.find('li').find('span');
                 for (let j = 0; j < curLiArr.length; j++) {
-                    if (curLiArr[j].innerHTML == val) {
+                    if (curLiArr[j].innerHTML == parseSku(val)) {
                         index = j;
                         break
                     }
@@ -540,6 +540,15 @@ function changeProtocol(val) {
         return val
     }
     return val;
+}
+
+// 兼容XXL(2尺3)等sku属性
+function parseSku(val) {
+    let leftBracket = val.indexOf('(');
+    if (leftBracket > 0) {
+        val = val.substring(0, leftBracket).trim();
+    }
+    return val
 }
 
 // 可拖拽详情框
