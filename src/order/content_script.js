@@ -278,13 +278,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 skuArr.push({skuName: name, skuVal: val, index})
             }
             console.log(skuArr);
-
             for (let i = 0; i < skuArr.length; i++) {
                 let aList = $('.J_TSaleProp[data-property="' + skuArr[i].skuName + '"] a');
                 // 如果sku的值只有一种选项，则页面默认选中，脚本不再点击
                 if (aList.length > 1) {
                     if (aList && aList[skuArr[i].index]) {
-                        // aList[skuArr[i].index].click()
+                        aList[skuArr[i].index].click()
                     }
                 }
             }
@@ -294,7 +293,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else {
         console.log('不是天猫页面!')
     }
-
     if (location.host == 'cart.1688.com') {
         if (request.cmd == 'pre') {
             if (request.value == null) return;
@@ -314,7 +312,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else {
         console.log('不是1688结算页!')
     }
-
 });
 
 // 给sku属性名做兼容，比如页面元素是返回尺码（双），带个单位，但接口返回'尺码'，做个兼容

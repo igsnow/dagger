@@ -22,7 +22,6 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
         // 给新建的tab绑定一个id，便于后面更新页面时发送消息
         request.msg.id = tab.id;
         window.data.push(request.msg);
-        console.log(window.data);
     });
 
     // 可以针对sender做一些白名单检查
@@ -34,15 +33,17 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     // 当平台是天猫时,选择sku属性时，url会改变，就会无限触发update方法，因此对根url进行判断，是否属于同一页面，如果是,则不再触发此方法
     let url = tab.url;
-    let firstSeg = url.indexOf('&');
-    let rootUrl = url.substring(0, firstSeg);
-
-
+    let prop_flag = url.indexOf('sku_properties');
+    let prop_skuId = url.indexOf('skuId');
+    let isOriginPage = false;
+    if (prop_flag > 0 || prop_skuId > 0) {
+        isOriginPage = true
+    }
     // 当新开标签页时，预加载蒙层
     if (changeInfo.status == 'loading') {
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
-                if (item.id === tabId) {
+                if (item.id === tabId && !isOriginPage) {
                     chrome.tabs.sendMessage(tabId, {cmd: 'pre', value: 'showMask'});
                 }
             });
@@ -52,7 +53,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete') {
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (item, index, arr) {
-                if (item.id === tabId) {
+                if (item.id === tabId && !isOriginPage) {
                     chrome.tabs.sendMessage(tabId, {cmd: 'sku', value: getCurTabMsg(window.data, tabId)});
                     // 给1688结算页发送订单所有详情信息
                     chrome.tabs.sendMessage(tabId, {cmd: 'all', value: window.data});
