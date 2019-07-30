@@ -457,6 +457,7 @@ function getSettlePopup(val) {
         let img = item && item.img;
         let name = item && item.name;
         let price = item && item.price;
+        let unit = item && item.unit;
         let propsViewArr = [];
         for (let i in sku) {
             if (sku.hasOwnProperty(i)) {
@@ -493,7 +494,7 @@ function getSettlePopup(val) {
         skuP.innerHTML = skuStr + '     ×' + num;
         rightDiv.appendChild(skuP);
         let priceP = document.createElement("p");
-        priceP.innerHTML = price + ' RMB';
+        priceP.innerHTML = price + ' RMB/' + unit;
         rightDiv.appendChild(priceP);
     }
     dragMove()
