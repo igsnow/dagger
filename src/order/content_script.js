@@ -279,11 +279,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             for (let i = 0; i < skuArr.length; i++) {
                 let aList = $('.J_TSaleProp[data-property="' + skuArr[i].skuName + '"] a');
                 // 如果sku的值只有一种选项，则页面默认选中，脚本不再点击
-                if (aList.length > 1) {
-                    if (aList && aList[skuArr[i].index]) {
-                        aList[skuArr[i].index].click()
-                    }
+                // if (aList.length > 1) {
+                if (aList && aList[skuArr[i].index]) {
+                    aList[skuArr[i].index].click()
                 }
+                // }
             }
             // 修改商品数量,直接修改商品数量无效，先加一再减一
             let ipt = $('.mui-amount-input');
@@ -298,10 +298,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             // 点击加入购物车按钮
             let cart = $('#J_LinkBasket');
             cart && cart[0] && cart[0].click();
-            // sleep1500ms，若出现提示框，则说明加入购物车成功
+            // sleep1500ms，若没有出现红色提示框，则说明加入购物车成功
             setTimeout(() => {
-                let tipDiv = document.getElementById('cartTip');
-                tipDiv.innerHTML = '加入购物车成功!';
+                let attention = $('.tb-attention');
+                if (!attention.length) {
+                    let tipDiv = document.getElementById('cartTip');
+                    tipDiv.innerHTML = '加入购物车成功!';
+                }
             }, 1500)
         }
     } else {
