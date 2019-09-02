@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "自动下单",
   "version": "0.1.0",
-  "author": "zhangzhiyong@vcanbuy",
+  "author": "zhangzhiyong",
   "description": "1688 auto order",
   "icons": {
     "16": "sicon.png",
